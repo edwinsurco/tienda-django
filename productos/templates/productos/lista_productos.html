@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Tienda Online</title>
+
+    {% load static %}
+    {% load carrito_extras %}
+
+    <link rel="stylesheet"
+          href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1 class="titulo">
+        🛍️ Mi Tienda
+    </h1>
+
+    <!-- BUSCADOR -->
+
+    <form method="GET" class="buscador">
+
+        <input type="text"
+               name="buscar"
+               placeholder="🔍 Buscar producto..."
+               value="{{ buscar }}">
+
+        <button type="submit">
+
+            🔍 Buscar
+
+        </button>
+
+    </form>
+
+    <!-- BOTON CARRITO -->
+
+    <a href="{% url 'ver_carrito' %}" 
+       class="boton-carrito">
+
+        🛒 Ver carrito
+
+    </a>
+
+    <!-- CATEGORIAS -->
+
+    <div class="categorias">
+
+        <!-- TODAS -->
+
+        <a href="{% url 'lista_productos' %}">
+
+            <span class="categoria 
+
+            {% if not categoria_actual %}
+            activa
+            {% endif %}
+
+            ">
+
+                Todas
+
+            </span>
+
+        </a>
+
+        <!-- CATEGORIAS DINAMICAS -->
+
+        {% for categoria in categorias %}
+
+        <a href="{% url 'productos_por_categoria' categoria.id %}">
+
+            <span class="categoria 
+
+            {% if categoria_actual and categoria.id == categoria_actual.id %}
+            activa
+            {% endif %}
+
+            ">
+
+                {{ categoria.nombre }}
+
+            </span>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- PRODUCTOS -->
+
+    <div class="productos">
+
+        {% for producto in productos %}
+
+        <div class="card">
+
+            <!-- IMAGEN -->
+
+            {% if producto.imagen %}
+
+                <img src="{{ producto.imagen.url }}"
+                     class="imagen">
+
+            {% endif %}
+
+            <!-- NOMBRE -->
+
+            <h2>
+
+                {{ producto.nombre }}
+
+            </h2>
+
+            <!-- PRECIO ESCALONADO -->
+
+            <div class="precio">
+
+            {% if producto.precio_actual != producto.precio %}
+
+            <span style="text-decoration: line-through; color:red;">
+
+            S/ {{ producto.precio }}
+
+            </span>
+
+            <span class="precio-descuento">
+
+            S/ {{ producto.precio_actual }}
+
+            </span>
+
+            {% else %}
+
+            <span class="precio-normal">
+
+            S/ {{ producto.precio }}
+
+            </span>
+
+           {% endif %}
+
+           </div>
+
+            <!-- DESCRIPCION -->
+
+            <p>
+
+                {{ producto.descripcion }}
+
+            </p>
+
+            <!-- BOTON AGREGAR -->
+
+            <a href="{% url 'agregar_producto' producto.id %}">
+
+                <button class="btn-agregar">
+
+                    ➕ Agregar
+
+                    {% if producto.cantidad_en_carrito > 0 %}
+
+                        ({{ producto.cantidad_en_carrito }})
+
+                    {% endif %}
+
+                </button>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

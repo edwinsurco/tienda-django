@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Pedido realizado</title>
+
+    {% load static %}
+
+    <link rel="stylesheet"
+          href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1 class="titulo">
+        ✅ Pedido realizado con éxito
+    </h1>
+
+    <p style="text-align:center; font-size:18px;">
+        Tu pedido fue registrado correctamente.
+    </p>
+
+    <br>
+
+    <div style="text-align:center;">
+
+        {% if request.session.mensaje_whatsapp %}
+
+        <a href="{{ request.session.mensaje_whatsapp }}"
+           target="_blank">
+
+            <button class="btn-agregar"
+                    style="background:green; font-size:18px;">
+
+                📲 Enviar pedido por WhatsApp
+
+            </button>
+
+        </a>
+
+        {% endif %}
+
+        <br><br>
+
+        <a href="/">
+            <button class="btn-agregar">
+                🛍️ Volver a la tienda
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

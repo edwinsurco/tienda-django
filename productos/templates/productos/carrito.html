@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carrito</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<h1>🛒 Mi Carrito</h1>
+
+{% if carrito %}
+
+<table border="1" align="center">
+
+<tr>
+    <th>Producto</th>
+    <th>Precio Unitario</th>
+    <th>Cantidad</th>
+    <th>Subtotal</th>
+    <th>Acciones</th>
+</tr>
+
+{% for key, item in carrito.items %}
+
+<tr>
+
+<td>
+    {{ item.nombre }}
+</td>
+
+<td>
+    S/ {{ item.precio_actual }}
+</td>
+
+<td>
+
+<a href="{% url 'restar_producto' key %}">
+<button>➖</button>
+</a>
+
+{{ item.cantidad }}
+
+<a href="{% url 'sumar_producto' key %}">
+<button>➕</button>
+</a>
+
+</td>
+
+<td>
+    S/ {{ item.subtotal }}
+</td>
+
+<td>
+
+<a href="{% url 'eliminar_producto' key %}">
+<button>❌</button>
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<h2>
+Total: S/ {{ total }}
+</h2>
+
+<a href="{% url 'crear_pedido' %}">
+    <button>
+        🧾 Realizar Pedido
+    </button>
+</a>
+
+{% else %}
+
+<p>El carrito está vacío.</p>
+
+{% endif %}
+
+<br>
+
+<a href="/">
+<button>⬅ Volver a la tienda</button>
+</a>
+
+</body>
+</html>

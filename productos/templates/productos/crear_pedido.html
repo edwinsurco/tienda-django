@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Realizar Pedido</title>
+
+{% load static %}
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<h1 class="titulo">
+🧾 Finalizar Pedido
+</h1>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<div style="max-width:400px;margin:auto;">
+
+{{ form.as_p }}
+
+<h3 class="total">
+Total: S/ {{ total }}
+</h3>
+
+<button class="btn-agregar">
+
+✅ Confirmar Pedido
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</body>
+
+</html>
