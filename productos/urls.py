@@ -38,4 +38,9 @@ urlpatterns = [
     views.pedido_exitoso,
     name='pedido_exitoso'),
 
+    path(
+    'actualizar/<int:producto_id>/',
+    views.actualizar_cantidad,
+    name='actualizar_cantidad'),
+
 ]

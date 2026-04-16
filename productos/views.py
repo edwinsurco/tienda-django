@@ -277,7 +277,7 @@ def crear_pedido(request):
 
             mensaje += f"%0ATotal: S/ {carrito.obtener_total()}"
 
-            numero = "51999999999"  # CAMBIAR
+            numero = "51918600550"  # CAMBIAR
 
             url = f"https://wa.me/{numero}?text={mensaje}"
 
@@ -310,3 +310,20 @@ def pedido_exitoso(request):
         request,
         'productos/pedido_exitoso.html'
     )
+
+def actualizar_cantidad(request, producto_id):
+
+    if request.method == "POST":
+
+        carrito = Carrito(request)
+
+        cantidad = int(request.POST.get("cantidad"))
+
+        producto = get_object_or_404(
+            Producto,
+            id=producto_id
+        )
+
+        carrito.actualizar(producto, cantidad)
+
+    return redirect('ver_carrito')

@@ -38,15 +38,29 @@
 
 <td>
 
+<form method="POST" action="{% url 'actualizar_cantidad' key %}" class="form-cantidad">
+
+{% csrf_token %}
+
 <a href="{% url 'restar_producto' key %}">
-<button>➖</button>
+    <button type="button">−</button>
 </a>
 
-{{ item.cantidad }}
+<input type="number"
+       name="cantidad"
+       value="{{ item.cantidad }}"
+       min="1"
+       class="input-cantidad">
 
 <a href="{% url 'sumar_producto' key %}">
-<button>➕</button>
+    <button type="button">+</button>
 </a>
+
+<button type="submit" class="btn-actualizar">
+    ✔
+</button>
+
+</form>
 
 </td>
 
