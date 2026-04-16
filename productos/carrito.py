@@ -96,7 +96,7 @@ class Carrito:
         self.session.modified = True
 
 
-        def actualizar(self, producto, cantidad):
+    def actualizar(self, producto, cantidad):
 
         producto_id = str(producto.id)
 
