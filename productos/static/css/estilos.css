@@ -303,3 +303,90 @@ body {
     color: black;
 
 }  
+
+/* TARJETAS MAS PROFESIONALES */
+
+.card {
+    position: relative;
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.03);
+}
+
+/* ETIQUETA OFERTA */
+
+.etiqueta-oferta {
+
+    position: absolute;
+    top: 10px;
+    left: 10px;
+
+    background: red;
+    color: white;
+
+    padding: 4px 8px;
+
+    font-size: 12px;
+
+    border-radius: 6px;
+
+    font-weight: bold;
+
+}
+
+/* PRECIO */
+
+.precio-anterior {
+
+    text-decoration: line-through;
+
+    color: gray;
+
+    font-size: 14px;
+
+    display: block;
+
+}
+
+.precio-descuento {
+
+    color: red;
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+}
+
+.precio-normal {
+
+    font-weight: bold;
+
+    font-size: 18px;
+
+}
+
+/* VERSION MOVIL MEJORADA */
+
+@media (max-width: 768px) {
+
+.titulo {
+    font-size: 22px;
+}
+
+.boton-carrito {
+
+    width: 100%;
+    text-align: center;
+
+}
+
+.buscador {
+
+    flex-direction: column;
+
+}
+
+}

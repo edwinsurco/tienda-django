@@ -23,20 +23,18 @@
 
     <!-- BUSCADOR -->
 
-    <form method="GET" class="buscador">
+    <form method="GET" action="" class="buscador">
 
-        <input type="text"
-               name="buscar"
-               placeholder="🔍 Buscar producto..."
-               value="{{ buscar }}">
+    <input type="text"
+           name="buscar"
+           placeholder="🔍 Buscar producto..."
+           value="{{ request.GET.buscar }}">
 
-        <button type="submit">
+    <button type="submit">
+        🔍 Buscar
+    </button>
 
-            🔍 Buscar
-
-        </button>
-
-    </form>
+</form>
 
     <!-- BOTON CARRITO -->
 
@@ -102,6 +100,15 @@
         <div class="card">
 
             <!-- IMAGEN -->
+        {% if producto.precio_actual != producto.precio %}
+
+        <span class="etiqueta-oferta">
+
+        OFERTA
+
+        </span>
+
+        {% endif %}     
 
             {% if producto.imagen %}
 
@@ -124,7 +131,7 @@
 
             {% if producto.precio_actual != producto.precio %}
 
-            <span style="text-decoration: line-through; color:red;">
+            <span class="precio-anterior">
 
             S/ {{ producto.precio }}
 
