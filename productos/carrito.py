@@ -95,18 +95,13 @@ class Carrito:
         self.session['carrito'] = self.carrito
         self.session.modified = True
 
-        
-    def actualizar(self, producto, cantidad):
 
-    producto_id = str(producto.id)
+        def actualizar(self, producto, cantidad):
 
-    if producto_id in self.carrito:
+        producto_id = str(producto.id)
 
-        self.carrito[producto_id]['cantidad'] = cantidad
+        if producto_id in self.carrito:
 
-        self.carrito[producto_id]['subtotal'] = (
-            cantidad *
-            self.carrito[producto_id]['precio_actual']
-        )
+            self.carrito[producto_id]['cantidad'] = cantidad
 
-    self.guardar_carrito()
+        self.guardar()
