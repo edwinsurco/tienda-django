@@ -124,36 +124,38 @@
                 {{ producto.nombre }}
 
             </h2>
+            
+            {% if producto.precio_actual != producto.precio %}
+
+            <div class="etiqueta-oferta">
+            OFERTA
+            </div>
+
+            {% endif %}
 
             <!-- PRECIO ESCALONADO -->
 
             <div class="precio">
 
-            {% if producto.precio_actual != producto.precio %}
+            {% if producto.tiene_descuento %}
 
-            <span class="precio-anterior">
+                <span class="precio-anterior">
+                   S/ {{ producto.precio }}
+                </span>
 
-            S/ {{ producto.precio }}
-
-            </span>
-
-            <span class="precio-descuento">
-
-            S/ {{ producto.precio_actual }}
-
-            </span>
+                <span class="precio-descuento">
+                   S/ {{ producto.precio_actual }}
+                </span>
 
             {% else %}
 
-            <span class="precio-normal">
+    <span class="precio-normal">
+        S/ {{ producto.precio }}
+    </span>
 
-            S/ {{ producto.precio }}
+{% endif %}
 
-            </span>
-
-           {% endif %}
-
-           </div>
+</div>
 
             <!-- DESCRIPCION -->
 
