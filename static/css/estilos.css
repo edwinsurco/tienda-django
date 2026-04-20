@@ -468,3 +468,42 @@ box-shadow: 0 8px 18px rgba(0,0,0,0.15);
     }
 
 }
+
+/* ========================= */
+/* CARRITO MOVIL */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+table {
+
+    width: 100%;
+
+    font-size: 14px;
+
+}
+
+th, td {
+
+    padding: 6px;
+
+    text-align: center;
+
+}
+
+input.input-cantidad {
+
+    width: 50px;
+
+}
+
+button {
+
+    padding: 6px;
+
+    font-size: 14px;
+
+}
+
+
+
