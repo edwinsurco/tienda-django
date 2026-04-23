@@ -506,4 +506,123 @@ button {
 }
 
 
+/* ========================= */
+/* BARRA SUPERIOR */
+/* ========================= */
+
+.barra-superior {
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-between;
+
+background: #273c75;
+
+color: white;
+
+padding: 10px 15px;
+
+position: sticky;
+
+top: 0;
+
+z-index: 1000;
+
+}
+
+/* TITULO */
+
+.titulo {
+
+margin: 0;
+
+font-size: 22px;
+
+color: white;
+
+}
+
+/* ICONOS */
+
+.acciones {
+
+display: flex;
+
+gap: 15px;
+
+}
+
+.icono {
+
+font-size: 22px;
+
+text-decoration: none;
+
+color: white;
+
+}
+
+/* BOTON MENU */
+
+.menu-btn {
+
+font-size: 24px;
+
+background: none;
+
+border: none;
+
+color: white;
+
+cursor: pointer;
+
+}
+
+/* MENU LATERAL */
+
+.menu-lateral {
+
+position: fixed;
+
+top: 0;
+
+left: -250px;
+
+width: 250px;
+
+height: 100%;
+
+background: white;
+
+padding: 20px;
+
+transition: 0.3s;
+
+box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+
+z-index: 999;
+
+}
+
+.menu-lateral a {
+
+display: block;
+
+margin-bottom: 12px;
+
+text-decoration: none;
+
+color: #2f3640;
+
+font-weight: bold;
+
+}
+
+.menu-lateral a:hover {
+
+color: #273c75;
+
+}
 

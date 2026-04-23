@@ -14,13 +14,84 @@
 
 </head>
 
+<script>
+
+function toggleMenu() {
+
+    var menu =
+        document.getElementById("menuLateral");
+
+    if (menu.style.left === "0px") {
+
+        menu.style.left = "-250px";
+
+    } else {
+
+        menu.style.left = "0px";
+
+    }
+
+}
+
+</script>
+
 <body>
 
 <div class="contenedor">
 
+    <!-- BARRA SUPERIOR -->
+
+    <div class="barra-superior">
+
+    <button class="menu-btn"
+            onclick="toggleMenu()">
+
+    ☰
+
+    </button>
+
     <h1 class="titulo">
-        🛍️ Mi Tienda
+    🛍️ Mi Tienda
     </h1>
+
+    <div class="acciones">
+
+    <a href="{% url 'ver_carrito' %}"
+       class="icono">
+
+    🛒
+
+    </a>
+
+    <a href="{% url 'consultar_pedido' %}"
+       class="icono">
+
+    🔎
+
+    </a>
+
+    </div>
+
+    </div>
+
+    <!-- MENU CATEGORIAS -->
+
+    <div id="menuLateral"
+         class="menu-lateral">
+
+    <h3>📂 Categorías</h3>
+
+    {% for categoria in categorias %}
+
+    <a href="{% url 'productos_por_categoria' categoria.id %}">
+
+    {{ categoria.nombre }}
+
+    </a>
+
+    {% endfor %}
+
+    </div>
 
     <!-- BUSCADOR -->
 
