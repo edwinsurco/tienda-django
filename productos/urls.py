@@ -43,4 +43,9 @@ urlpatterns = [
     views.actualizar_cantidad,
     name='actualizar_cantidad'),
 
+    path(
+    'consultar-pedido/',
+    views.consultar_pedido,
+    name='consultar_pedido'),
+
 ]

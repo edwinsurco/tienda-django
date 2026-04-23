@@ -3,6 +3,7 @@ from .forms import PedidoForm
 from urllib.parse import quote
 from .models import Pedido, DetallePedido
 import urllib.parse
+from .models import Pedido
 
 from .models import (
     Producto,
@@ -327,3 +328,27 @@ def actualizar_cantidad(request, producto_id):
         carrito.actualizar(producto, cantidad)
 
     return redirect('ver_carrito')
+
+def consultar_pedido(request):
+
+    pedido = None
+    error = None
+
+    if request.method == "POST":
+
+        numero = request.POST.get("numero")
+
+        try:
+            pedido = Pedido.objects.get(id=numero)
+
+        except Pedido.DoesNotExist:
+            error = "Pedido no encontrado"
+
+    return render(
+        request,
+        'productos/consultar_pedido.html',
+        {
+            'pedido': pedido,
+            'error': error
+        }
+    )
