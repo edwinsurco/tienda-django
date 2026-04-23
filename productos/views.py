@@ -286,7 +286,7 @@ def crear_pedido(request):
 
             request.session['carrito'] = {}
 
-            return redirect('pedido_exitoso')
+            return redirect('pedido_exitoso', pedido_id=pedido.id)
 
     else:
 
@@ -305,11 +305,16 @@ def crear_pedido(request):
         context
     )
 
-def pedido_exitoso(request):
+def pedido_exitoso(request, pedido_id):
+
+    pedido = Pedido.objects.get(id=pedido_id)
 
     return render(
         request,
-        'productos/pedido_exitoso.html'
+        'productos/pedido_exitoso.html',
+        {
+            'pedido': pedido
+        }
     )
 
 def actualizar_cantidad(request, producto_id):
@@ -332,6 +337,7 @@ def actualizar_cantidad(request, producto_id):
 def consultar_pedido(request):
 
     pedido = None
+    detalles = None
     error = None
 
     if request.method == "POST":
@@ -339,9 +345,15 @@ def consultar_pedido(request):
         numero = request.POST.get("numero")
 
         try:
+
             pedido = Pedido.objects.get(id=numero)
 
+            detalles = DetallePedido.objects.filter(
+                pedido=pedido
+            )
+
         except Pedido.DoesNotExist:
+
             error = "Pedido no encontrado"
 
     return render(
@@ -349,6 +361,7 @@ def consultar_pedido(request):
         'productos/consultar_pedido.html',
         {
             'pedido': pedido,
+            'detalles': detalles,
             'error': error
         }
     )

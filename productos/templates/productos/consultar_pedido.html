@@ -59,6 +59,22 @@ Fecha:
 <p>
 Total:
 S/ {{ pedido.total }}
+<h3>Productos:</h3>
+
+<ul>
+
+{% for item in detalles %}
+
+<li>
+
+{{ item.producto.nombre }}
+x {{ item.cantidad }}
+
+</li>
+
+{% endfor %}
+
+</ul>
 </p>
 
 </div>

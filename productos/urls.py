@@ -34,7 +34,7 @@ urlpatterns = [
     name='crear_pedido'),
 
     path(
-    'pedido-exitoso/',
+    'pedido-exitoso/<int:pedido_id>/',
     views.pedido_exitoso,
     name='pedido_exitoso'),
 

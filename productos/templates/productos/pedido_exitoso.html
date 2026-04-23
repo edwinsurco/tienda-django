@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-    <title>Pedido realizado</title>
+<title>Pedido Exitoso</title>
 
-    {% load static %}
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet"
-          href="{% static 'css/estilos.css' %}">
+{% load static %}
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
 
 </head>
 
@@ -16,45 +19,44 @@
 
 <div class="contenedor">
 
-    <h1 class="titulo">
-        ✅ Pedido realizado con éxito
-    </h1>
+<h1>✅ Pedido realizado</h1>
 
-    <p style="text-align:center; font-size:18px;">
-        Tu pedido fue registrado correctamente.
-    </p>
+<h2>
+📦 Número de pedido:
+<strong>
+#{{ pedido.id }}
+</strong>
+</h2>
 
-    <br>
+<p>
+Guarda este número para consultar tu pedido.
+</p>
 
-    <div style="text-align:center;">
+<p>
+Estado actual:
+<strong>
+{{ pedido.estado }}
+</strong>
+</p>
 
-        {% if request.session.mensaje_whatsapp %}
+<br>
 
-        <a href="{{ request.session.mensaje_whatsapp }}"
-           target="_blank">
+<a href="{% url 'consultar_pedido' %}">
+<button>
+📦 Consultar pedido
+</button>
+</a>
 
-            <button class="btn-agregar"
-                    style="background:green; font-size:18px;">
+<br><br>
 
-                📲 Enviar pedido por WhatsApp
-
-            </button>
-
-        </a>
-
-        {% endif %}
-
-        <br><br>
-
-        <a href="/">
-            <button class="btn-agregar">
-                🛍️ Volver a la tienda
-            </button>
-        </a>
-
-    </div>
+<a href="/">
+<button>
+⬅ Volver a tienda
+</button>
+</a>
 
 </div>
 
 </body>
+
 </html>
