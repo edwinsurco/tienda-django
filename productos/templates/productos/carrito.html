@@ -1,29 +1,63 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Carrito</title>
 
-    {% load static %}
+<title>Carrito</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+{% load static %}
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
 
 </head>
 
 <body>
 
+<header class="header-tienda">
+
+    <div class="logo-tienda">
+        🛍️ <span>Mi Tienda</span>
+    </div>
+
+    <nav class="nav-tienda">
+
+        <a href="{% url 'lista_productos' %}">
+            Inicio
+        </a>
+
+        <a href="{% url 'consultar_pedido' %}">
+            📦 Pedidos
+        </a>
+
+        <a href="{% url 'ver_carrito' %}"
+           class="carrito-header nav-activo">
+            🛒 Carrito
+        </a>
+
+    </nav>
+
+</header>
+
+<div class="contenedor">
+
 <h1>🛒 Mi Carrito</h1>
 
 {% if carrito %}
 
-<table border="1" align="center">
+<div class="table-container">
+
+<table border="1">
 
 <tr>
     <th>Producto</th>
-    <th>Precio Unitario</th>
+    <th>Precio</th>
     <th>Cantidad</th>
     <th>Subtotal</th>
-    <th>Acciones</th>
+    <th>Acción</th>
 </tr>
 
 {% for key, item in carrito.items %}
@@ -31,21 +65,23 @@
 <tr>
 
 <td>
-    {{ item.nombre }}
+{{ item.nombre }}
 </td>
 
 <td>
-    S/ {{ item.precio_actual }}
+S/ {{ item.precio_actual }}
 </td>
 
 <td>
 
-<form method="POST" action="{% url 'actualizar_cantidad' key %}" class="form-cantidad">
+<form method="POST"
+      action="{% url 'actualizar_cantidad' key %}"
+      class="form-cantidad">
 
 {% csrf_token %}
 
 <a href="{% url 'restar_producto' key %}">
-    <button type="button">−</button>
+<button type="button">−</button>
 </a>
 
 <input type="number"
@@ -55,11 +91,12 @@
        class="input-cantidad">
 
 <a href="{% url 'sumar_producto' key %}">
-    <button type="button">+</button>
+<button type="button">+</button>
 </a>
 
-<button type="submit" class="btn-actualizar">
-    ✔
+<button type="submit"
+        class="btn-actualizar">
+✔
 </button>
 
 </form>
@@ -67,7 +104,7 @@
 </td>
 
 <td>
-    S/ {{ item.subtotal }}
+S/ {{ item.subtotal }}
 </td>
 
 <td>
@@ -84,6 +121,8 @@
 
 </table>
 
+</div>
+
 <br>
 
 <h2>
@@ -91,22 +130,29 @@ Total: S/ {{ total }}
 </h2>
 
 <a href="{% url 'crear_pedido' %}">
-    <button>
-        🧾 Realizar Pedido
-    </button>
+<button>
+🧾 Realizar Pedido
+</button>
 </a>
 
 {% else %}
 
-<p>El carrito está vacío.</p>
+<p style="text-align:center;">
+El carrito está vacío.
+</p>
 
 {% endif %}
 
 <br>
 
-<a href="/">
-<button>⬅ Volver a la tienda</button>
+<a href="{% url 'lista_productos' %}">
+<button>
+⬅ Volver a la tienda
+</button>
 </a>
 
+</div>
+
 </body>
+
 </html>

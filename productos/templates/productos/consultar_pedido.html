@@ -17,11 +17,35 @@
 
 <body>
 
+<header class="header-tienda">
+
+    <div class="logo-tienda">
+        🛍️ <span>Mi Tienda</span>
+    </div>
+
+    <nav class="nav-tienda">
+
+        <a href="{% url 'lista_productos' %}">
+            Inicio
+        </a>
+
+        <a href="{% url 'consultar_pedido' %}" class="nav-activo">
+            📦 Pedidos
+        </a>
+
+        <a href="{% url 'ver_carrito' %}" class="carrito-header">
+            🛒 Carrito
+        </a>
+
+    </nav>
+
+</header>
+
 <div class="contenedor">
 
 <h1>📦 Consultar Pedido</h1>
 
-<form method="POST">
+<form method="POST" class="buscador">
 
 {% csrf_token %}
 
@@ -58,24 +82,18 @@ Fecha:
 
 <p>
 Total:
-S/ {{ pedido.total }}
+<strong>S/ {{ pedido.total }}</strong>
+</p>
+
 <h3>Productos:</h3>
 
 <ul>
-
 {% for item in detalles %}
-
 <li>
-
-{{ item.producto.nombre }}
-x {{ item.cantidad }}
-
+{{ item.producto.nombre }} x {{ item.cantidad }}
 </li>
-
 {% endfor %}
-
 </ul>
-</p>
 
 </div>
 
@@ -83,7 +101,7 @@ x {{ item.cantidad }}
 
 {% if error %}
 
-<p style="color:red;">
+<p style="color:red; text-align:center;">
 {{ error }}
 </p>
 
@@ -91,7 +109,7 @@ x {{ item.cantidad }}
 
 <br>
 
-<a href="/">
+<a href="{% url 'lista_productos' %}">
 <button>
 ⬅ Volver a tienda
 </button>
