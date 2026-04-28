@@ -505,26 +505,28 @@ button {
 
 }
 
-
 /* ========================= */
-/* CATEGORIAS PROFESIONALES */
+/* CATEGORIAS DESLIZABLES PRO */
 /* ========================= */
 
 .categorias-wrapper {
     position: relative;
+    display: flex;
+    align-items: center;
     width: 100%;
     margin-bottom: 20px;
 }
 
 .categorias {
     display: flex;
-    flex-wrap: nowrap;      /* IMPORTANTE */
+    flex-wrap: nowrap;
+    gap: 10px;
     overflow-x: auto;
     white-space: nowrap;
-    gap: 10px;
-    padding: 10px 45px;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    padding: 10px 45px;
+    width: 100%;
 }
 
 .categorias::-webkit-scrollbar {
@@ -558,23 +560,31 @@ button {
     font-weight: bold;
 }
 
-/* Flecha derecha */
-
-.flecha-categorias {
+.flecha-cat {
     position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
+    z-index: 10;
     background: #273c75;
     color: white;
+    border: none;
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    text-align: center;
-    line-height: 38px;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.flecha-cat.izquierda {
+    left: 0;
+}
+
+.flecha-cat.derecha {
+    right: 0;
+}
+
+.flecha-cat:hover {
+    background: #192a56;
 }
 
 /* CELULAR */
@@ -582,7 +592,7 @@ button {
 @media (max-width: 768px) {
 
     .categorias {
-        padding: 10px 38px 10px 5px;
+        padding: 10px 38px;
         gap: 8px;
     }
 
@@ -591,11 +601,10 @@ button {
         padding: 8px 14px;
     }
 
-    .flecha-categorias {
+    .flecha-cat {
         width: 30px;
         height: 30px;
-        line-height: 30px;
-        font-size: 20px;
+        font-size: 22px;
     }
 
 }

@@ -59,15 +59,20 @@
     <!-- CATEGORIAS -->
 
     <div class="categorias-wrapper">
-        <div class="categorias">
 
-           <a href="{% url 'lista_productos' %}">
-               <span class="categoria 
-               {% if not categoria_actual %}
-               activa
-               {% endif %}
-               ">
-                   Todas
+        <button class="flecha-cat izquierda" onclick="moverCategorias(-200)">
+            ‹
+        </button>
+
+        <div class="categorias" id="categoriasScroll">
+
+            <a href="{% url 'lista_productos' %}">
+                <span class="categoria 
+                {% if not categoria_actual %}
+                activa
+                {% endif %}
+                ">
+                     Todas
                 </span>
             </a>
 
@@ -87,11 +92,21 @@
 
         </div>
 
-        <div class="flecha-categorias">
+        <button class="flecha-cat derecha" onclick="moverCategorias(200)">
             ›
-        </div>
+        </button>
 
     </div>
+
+    <script>
+    function moverCategorias(cantidad) {
+        const contenedor = document.getElementById("categoriasScroll");
+        contenedor.scrollBy({
+            left: cantidad,
+            behavior: "smooth"
+        });
+    }
+    </script>
     
 
     <!-- PRODUCTOS -->
