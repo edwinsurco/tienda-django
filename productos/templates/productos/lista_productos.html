@@ -18,6 +18,30 @@
 
 <body>
 
+<header class="header-tienda">
+
+    <div class="logo-tienda">
+        🛍️ Mi Tienda
+    </div>
+
+    <nav class="nav-tienda">
+
+        <a href="{% url 'lista_productos' %}">
+            Inicio
+        </a>
+
+        <a href="{% url 'consultar_pedido' %}">
+            📦 Consultar pedido
+        </a>
+
+        <a href="{% url 'ver_carrito' %}" class="carrito-header">
+            🛒 Carrito
+        </a>
+
+    </nav>
+
+</header>
+
 <div class="contenedor">
 
     <h1 class="titulo">

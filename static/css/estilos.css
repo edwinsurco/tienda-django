@@ -608,3 +608,73 @@ button {
     }
 
 }
+
+/* ========================= */
+/* HEADER PROFESIONAL */
+/* ========================= */
+
+.header-tienda {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: #273c75;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 12px 5%;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.logo-tienda {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.nav-tienda {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.nav-tienda a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.carrito-header {
+    background: #44bd32;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+/* CELULAR */
+
+@media (max-width: 768px) {
+
+    .header-tienda {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .logo-tienda {
+        font-size: 20px;
+    }
+
+    .nav-tienda {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .nav-tienda a {
+        font-size: 14px;
+    }
+}
