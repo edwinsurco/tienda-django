@@ -506,3 +506,65 @@ button {
 }
 
 
+/* CATEGORIAS DESLIZABLES */
+
+.categorias-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.categorias {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 10px 35px 10px 5px;
+    scroll-behavior: smooth;
+}
+
+.categorias a {
+    text-decoration: none;
+    flex: 0 0 auto;
+}
+
+.categoria {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.categoria.activa {
+    background: #273c75;
+    color: white;
+    font-weight: bold;
+}
+
+.flecha-categorias {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #273c75;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 28px;
+    font-size: 24px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* Ocultar barra fea del scroll */
+.categorias::-webkit-scrollbar {
+    display: none;
+}
+
+.categorias {
+    scrollbar-width: none;
+}

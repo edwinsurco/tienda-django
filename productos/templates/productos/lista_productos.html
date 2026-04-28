@@ -58,49 +58,41 @@
 
     <!-- CATEGORIAS -->
 
-    <div class="categorias">
+    <div class="categorias-wrapper">
+        <div class="categorias">
 
-        <!-- TODAS -->
+           <a href="{% url 'lista_productos' %}">
+               <span class="categoria 
+               {% if not categoria_actual %}
+               activa
+               {% endif %}
+               ">
+                   Todas
+                </span>
+            </a>
 
-        <a href="{% url 'lista_productos' %}">
+            {% for categoria in categorias %}
 
-            <span class="categoria 
+            <a href="{% url 'productos_por_categoria' categoria.id %}">
+                <span class="categoria 
+                {% if categoria_actual and categoria.id == categoria_actual.id %}
+                activa
+                {% endif %}
+                ">
+                    {{ categoria.nombre }}
+                </span>
+            </a>
 
-            {% if not categoria_actual %}
-            activa
-            {% endif %}
+            {% endfor %}
 
-            ">
+        </div>
 
-                Todas
-
-            </span>
-
-        </a>
-
-        <!-- CATEGORIAS DINAMICAS -->
-
-        {% for categoria in categorias %}
-
-        <a href="{% url 'productos_por_categoria' categoria.id %}">
-
-            <span class="categoria 
-
-            {% if categoria_actual and categoria.id == categoria_actual.id %}
-            activa
-            {% endif %}
-
-            ">
-
-                {{ categoria.nombre }}
-
-            </span>
-
-        </a>
-
-        {% endfor %}
+        <div class="flecha-categorias">
+            ›
+        </div>
 
     </div>
+    
 
     <!-- PRODUCTOS -->
 
