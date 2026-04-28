@@ -609,10 +609,6 @@ button {
 
 }
 
-/* ========================= */
-/* HEADER PROFESIONAL */
-/* ========================= */
-
 .header-tienda {
     position: sticky;
     top: 0;
@@ -625,35 +621,45 @@ button {
     justify-content: space-between;
     align-items: center;
 
-    padding: 12px 5%;
+    padding: 14px 5%;
 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
 }
 
 .logo-tienda {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .nav-tienda {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
 }
 
 .nav-tienda a {
     color: white;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.nav-tienda a:hover {
+    background: rgba(255,255,255,0.15);
 }
 
 .carrito-header {
     background: #44bd32;
-    padding: 8px 12px;
-    border-radius: 8px;
 }
 
-/* CELULAR */
+.carrito-header:hover {
+    background: #2f9e24 !important;
+}
 
 @media (max-width: 768px) {
 
@@ -664,17 +670,17 @@ button {
     }
 
     .logo-tienda {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .nav-tienda {
         width: 100%;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 8px;
     }
 
     .nav-tienda a {
         font-size: 14px;
+        padding: 8px 10px;
     }
 }

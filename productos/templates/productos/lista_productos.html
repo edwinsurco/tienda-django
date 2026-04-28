@@ -21,7 +21,7 @@
 <header class="header-tienda">
 
     <div class="logo-tienda">
-        🛍️ Mi Tienda
+        🛍️ <span>Mi Tienda</span>
     </div>
 
     <nav class="nav-tienda">
@@ -31,7 +31,7 @@
         </a>
 
         <a href="{% url 'consultar_pedido' %}">
-            📦 Consultar pedido
+            📦 Pedidos
         </a>
 
         <a href="{% url 'ver_carrito' %}" class="carrito-header">
@@ -41,13 +41,9 @@
     </nav>
 
 </header>
-
 <div class="contenedor">
 
-    <h1 class="titulo">
-        🛍️ Mi Tienda
-    </h1>
-
+    
 
     <!-- BUSCADOR -->
 
@@ -64,21 +60,7 @@
 
 </form>
 
-    <!-- BOTON CARRITO -->
 
-    <a href="{% url 'ver_carrito' %}" 
-       class="boton-carrito">
-
-        🛒 Ver carrito
-
-    </a>
-
-    <a href="{% url 'consultar_pedido' %}"
-     class="boton-carrito">
-
-    📦 Consultar pedido
-
-    </a>
 
     <!-- CATEGORIAS -->
 
