@@ -502,3 +502,91 @@ td {
         font-size: 22px;
     }
 }
+
+/* ========================= */
+/* WHATSAPP FLOTANTE */
+/* ========================= */
+
+.whatsapp-flotante {
+    position: fixed;
+    right: 22px;
+    bottom: 22px;
+    z-index: 2000;
+
+    width: 58px;
+    height: 58px;
+
+    background: #25D366;
+    color: white;
+
+    border-radius: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 30px;
+    text-decoration: none;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+
+    transition: 0.2s;
+}
+
+.whatsapp-flotante:hover {
+    transform: scale(1.08);
+    background: #1ebe5d;
+}
+
+@media (max-width: 768px) {
+
+    .whatsapp-flotante {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+        right: 16px;
+        bottom: 16px;
+    }
+
+}
+
+/* ========================= */
+/* BANNER PROMOCION ROTATIVO */
+/* ========================= */
+
+.banner-promocion {
+    background: linear-gradient(90deg, #44bd32, #2ecc71);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 12px;
+    letter-spacing: 0.3px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+#textoBanner {
+    display: inline-block;
+    animation: aparecerBanner 0.5s ease;
+}
+
+@keyframes aparecerBanner {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .banner-promocion {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+}

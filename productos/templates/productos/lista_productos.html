@@ -18,6 +18,12 @@
 
 <body>
 
+<a href="https://wa.me/51918600550"
+   class="whatsapp-flotante"
+   target="_blank">
+    💬
+</a>    
+
 <header class="header-tienda">
 
     <div class="logo-tienda">
@@ -41,6 +47,29 @@
     </nav>
 
 </header>
+
+<div class="banner-promocion">
+
+    <span id="textoBanner">
+        🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad
+    </span>
+
+</div>
+
+<script>
+const mensajesBanner = [
+    "🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad",
+    "🔥 Descuentos por compras al por mayor",
+    "📦 Atención rápida por WhatsApp"
+];
+
+let indiceBanner = 0;
+
+setInterval(() => {
+    indiceBanner = (indiceBanner + 1) % mensajesBanner.length;
+    document.getElementById("textoBanner").textContent = mensajesBanner[indiceBanner];
+}, 4000);
+</script>
 
 
 <div class="contenedor">
@@ -151,13 +180,6 @@
 
             </h2>
             
-            {% if producto.precio_actual != producto.precio %}
-
-            <div class="etiqueta-oferta">
-            OFERTA
-            </div>
-
-            {% endif %}
 
             <!-- PRECIO ESCALONADO -->
 
