@@ -48,4 +48,9 @@ urlpatterns = [
     views.consultar_pedido,
     name='consultar_pedido'),
 
+    path(
+    'buscar-cliente/',
+    views.buscar_cliente,
+    name='buscar_cliente'),
+
 ]

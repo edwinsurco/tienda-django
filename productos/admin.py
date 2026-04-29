@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import (
+    Cliente,
     Producto,
     Categoria,
     EscalaPrecio,
@@ -8,16 +9,19 @@ from .models import (
     DetallePedido
 )
 
+# =========================
 # INLINE ESCALAS
+# =========================
 
 class EscalaPrecioInline(admin.TabularInline):
 
     model = EscalaPrecio
-
     extra = 1
 
 
+# =========================
 # ADMIN PRODUCTOS
+# =========================
 
 class ProductoAdmin(admin.ModelAdmin):
 
@@ -27,17 +31,26 @@ class ProductoAdmin(admin.ModelAdmin):
         'categoria'
     )
 
+    search_fields = (
+        'nombre',
+    )
+
+    list_filter = (
+        'categoria',
+    )
+
     inlines = [
         EscalaPrecioInline
     ]
 
 
-# INLINE DETALLES PEDIDO
+# =========================
+# INLINE DETALLE PEDIDO
+# =========================
 
 class DetallePedidoInline(admin.TabularInline):
 
     model = DetallePedido
-
     extra = 0
 
     readonly_fields = (
@@ -48,7 +61,9 @@ class DetallePedidoInline(admin.TabularInline):
     )
 
 
-# ADMIN PEDIDOS (MUY IMPORTANTE)
+# =========================
+# ADMIN PEDIDOS
+# =========================
 
 class PedidoAdmin(admin.ModelAdmin):
 
@@ -76,7 +91,35 @@ class PedidoAdmin(admin.ModelAdmin):
     ]
 
 
+# =========================
+# ADMIN CLIENTES
+# =========================
+
+class ClienteAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'dni_ruc',
+        'nombre_razon_social',
+        'celular',
+        'correo',
+        'fecha_registro'
+    )
+
+    search_fields = (
+        'dni_ruc',
+        'nombre_razon_social',
+        'celular'
+    )
+
+
+# =========================
 # REGISTROS
+# =========================
+
+admin.site.register(
+    Cliente,
+    ClienteAdmin
+)
 
 admin.site.register(
     Producto,

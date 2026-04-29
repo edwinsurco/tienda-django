@@ -2,17 +2,27 @@ from django import forms
 
 class PedidoForm(forms.Form):
 
-    nombre = forms.CharField(
-        label="Nombre",
-        max_length=100
+    dni_ruc = forms.CharField(
+        label="DNI o RUC",
+        max_length=20
     )
 
-    telefono = forms.CharField(
-        label="Teléfono",
+    nombre_razon_social = forms.CharField(
+        label="Nombre o Razón Social",
+        max_length=200
+    )
+
+    celular = forms.CharField(
+        label="Celular",
         max_length=20
     )
 
     direccion = forms.CharField(
         label="Dirección",
         widget=forms.Textarea
+    )
+
+    correo = forms.EmailField(
+        label="Correo",
+        required=False
     )

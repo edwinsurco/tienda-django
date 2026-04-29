@@ -4,6 +4,8 @@ from urllib.parse import quote
 from .models import Pedido, DetallePedido
 import urllib.parse
 from .models import Pedido
+from django.http import JsonResponse
+from .models import Cliente
 
 from .models import (
     Producto,
@@ -245,12 +247,24 @@ def crear_pedido(request):
 
         if form.is_valid():
 
-            nombre = form.cleaned_data['nombre']
-            telefono = form.cleaned_data['telefono']
+            dni_ruc = form.cleaned_data['dni_ruc']
+            nombre = form.cleaned_data['nombre_razon_social']
+            telefono = form.cleaned_data['celular']
             direccion = form.cleaned_data['direccion']
+            correo = form.cleaned_data['correo']
+
+            cliente, creado = Cliente.objects.update_or_create(
+                dni_ruc=dni_ruc,
+                defaults={
+                    'nombre_razon_social': nombre,
+                    'celular': telefono,
+                    'direccion': direccion,
+                    'correo': correo
+                }
+            )
 
             pedido = Pedido.objects.create(
-
+                cliente=cliente,
                 nombre=nombre,
                 telefono=telefono,
                 direccion=direccion,
@@ -266,7 +280,6 @@ def crear_pedido(request):
             for key, item in carrito.carrito.items():
 
                 DetallePedido.objects.create(
-
                     pedido=pedido,
                     producto_id=key,
                     cantidad=item['cantidad'],
@@ -278,31 +291,29 @@ def crear_pedido(request):
 
             mensaje += f"%0ATotal: S/ {carrito.obtener_total()}"
 
-            numero = "51918600550"  # CAMBIAR
+            numero = "51918600550"
 
             url = f"https://wa.me/{numero}?text={mensaje}"
 
             request.session['mensaje_whatsapp'] = url
-
             request.session['carrito'] = {}
 
-            return redirect('pedido_exitoso', pedido_id=pedido.id)
+            return redirect(
+                'pedido_exitoso',
+                pedido_id=pedido.id
+            )
 
     else:
 
         form = PedidoForm()
 
-    context = {
-
-        'form': form,
-        'total': carrito.obtener_total()
-
-    }
-
     return render(
         request,
         'productos/crear_pedido.html',
-        context
+        {
+            'form': form,
+            'total': carrito.obtener_total()
+        }
     )
 
 def pedido_exitoso(request, pedido_id):
@@ -365,3 +376,26 @@ def consultar_pedido(request):
             'error': error
         }
     )
+
+def buscar_cliente(request):
+
+    dni_ruc = request.GET.get('dni_ruc')
+
+    try:
+        cliente = Cliente.objects.get(dni_ruc=dni_ruc)
+
+        data = {
+            'existe': True,
+            'nombre_razon_social': cliente.nombre_razon_social,
+            'celular': cliente.celular,
+            'direccion': cliente.direccion,
+            'correo': cliente.correo or ''
+        }
+
+    except Cliente.DoesNotExist:
+
+        data = {
+            'existe': False
+        }
+
+    return JsonResponse(data)

@@ -7,6 +7,7 @@
 
 {% load static %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
       href="{% static 'css/estilos.css' %}">
 
@@ -27,6 +28,38 @@
 <div style="max-width:400px;margin:auto;">
 
 {{ form.as_p }}
+
+<script>
+
+const dniInput = document.getElementById("id_dni_ruc");
+
+dniInput.addEventListener("blur", function() {
+
+    const dni = dniInput.value;
+
+    if (dni.length < 8) {
+        return;
+    }
+
+    fetch(`/buscar-cliente/?dni_ruc=${dni}`)
+        .then(response => response.json())
+        .then(data => {
+
+            if (data.existe) {
+
+                document.getElementById("id_nombre_razon_social").value = data.nombre_razon_social;
+                document.getElementById("id_celular").value = data.celular;
+                document.getElementById("id_direccion").value = data.direccion;
+                document.getElementById("id_correo").value = data.correo;
+
+                alert("Cliente encontrado. Datos completados automáticamente.");
+            }
+
+        });
+
+});
+
+</script>
 
 <h3 class="total">
 Total: S/ {{ total }}

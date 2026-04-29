@@ -51,8 +51,44 @@ class EscalaPrecio(models.Model):
     def __str__(self):
         return f"{self.cantidad_minima}+ unidades"
 
+class Cliente(models.Model):
+
+    dni_ruc = models.CharField(
+        max_length=20,
+        unique=True
+    )
+
+    nombre_razon_social = models.CharField(
+        max_length=200
+    )
+
+    celular = models.CharField(
+        max_length=20
+    )
+
+    direccion = models.TextField()
+
+    correo = models.EmailField(
+        blank=True,
+        null=True
+    )
+
+    fecha_registro = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.nombre_razon_social} - {self.dni_ruc}"
 
 class Pedido(models.Model):
+
+    cliente = models.ForeignKey(
+        Cliente,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='pedidos'
+    )
 
     nombre = models.CharField(max_length=100)
 
@@ -68,13 +104,9 @@ class Pedido(models.Model):
     )
 
     ESTADOS = [
-
         ('Pendiente', 'Pendiente'),
-
         ('Enviado', 'Enviado'),
-
         ('Entregado', 'Entregado'),
-
     ]
 
     estado = models.CharField(
