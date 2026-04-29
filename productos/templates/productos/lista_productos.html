@@ -148,11 +148,11 @@ setInterval(() => {
 
     <!-- PRODUCTOS -->
 
-    <div class="productos">
+    <div class="productos" id="listaProductos">
 
         {% for producto in productos %}
 
-        <div class="card">
+        <div class="card producto-item">
         
         {% if producto.tiene_escalas %}
         <div class="punto-escalado"></div>
@@ -243,6 +243,45 @@ setInterval(() => {
 
 </div>
 
+<div class="ver-mas">
+    <button id="btnVerMas">
+        VER MÁS ↓
+    </button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    const productos = document.querySelectorAll(".producto-item");
+    const boton = document.getElementById("btnVerMas");
+
+    let cantidadVisible = window.innerWidth <= 768 ? 12 : 24;
+    let incremento = window.innerWidth <= 768 ? 12 : 24;
+
+    function mostrarProductos() {
+        productos.forEach((producto, index) => {
+            if (index < cantidadVisible) {
+                producto.style.display = "block";
+            } else {
+                producto.style.display = "none";
+            }
+        });
+
+        if (cantidadVisible >= productos.length) {
+            boton.style.display = "none";
+        }
+    }
+
+    boton.addEventListener("click", function() {
+        cantidadVisible += incremento;
+        mostrarProductos();
+    });
+
+    mostrarProductos();
+
+});
+</script>
+
 <footer class="footer-tienda">
 
     <h3>
@@ -278,6 +317,20 @@ setInterval(() => {
     </div>
 
 </footer>
+
+<a href="#" class="btn-subir">
+⬆
+</a>
+
+<div class="ver-mas">
+<button>
+VER MÁS ↓
+</button>
+</div>
+
+<a href="#" class="btn-subir">
+⬆
+</a>
 
 </body>
 
