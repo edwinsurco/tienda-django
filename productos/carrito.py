@@ -12,19 +12,46 @@ class Carrito:
 
         self.carrito = carrito
 
-    def agregar(self, producto):
-        producto_id = str(producto.id)
+    def agregar(self, producto, variante=None):
 
-        if producto_id not in self.carrito:
-            self.carrito[producto_id] = {
-                'nombre': producto.nombre,
-                'precio': float(producto.precio),
-                'cantidad': 1
-            }
-        else:
-            self.carrito[producto_id]['cantidad'] += 1
+    producto_id = str(producto.id)
 
-        self.guardar()
+    variante_id = ""
+
+    variante_nombre = ""
+
+    if variante:
+
+        variante_id = str(variante.id)
+        variante_nombre = variante.nombre
+
+    carrito_key = producto_id
+
+    if variante_id:
+
+        carrito_key = f"{producto_id}_{variante_id}"
+
+    if carrito_key not in self.carrito:
+
+        nombre_producto = producto.nombre
+
+        if variante_nombre:
+
+            nombre_producto = f"{producto.nombre} - {variante_nombre}"
+
+        self.carrito[carrito_key] = {
+            'producto_id': producto_id,
+            'variante_id': variante_id,
+            'nombre': nombre_producto,
+            'precio': float(producto.precio),
+            'cantidad': 1
+        }
+
+    else:
+
+        self.carrito[carrito_key]['cantidad'] += 1
+
+    self.guardar()
 
     def eliminar(self, producto):
         producto_id = str(producto.id)
@@ -55,32 +82,35 @@ class Carrito:
 
     def obtener_total(self):
 
-        total = 0
+    total = 0
 
-        for key, item in self.carrito.items():
+    for key, item in self.carrito.items():
 
-            producto = Producto.objects.get(id=key)
+        producto = Producto.objects.get(
+            id=item.get('producto_id', key)
+        )
 
-            cantidad = item['cantidad']
+        cantidad = item['cantidad']
 
-            precio = float(producto.precio)
+        precio = float(producto.precio)
 
-            # ESCALAS POR PRODUCTO
-            escalas = producto.escalas.all().order_by('cantidad_minima')
+        escalas = producto.escalas.all().order_by(
+            'cantidad_minima'
+        )
 
-            for escala in escalas:
-                if cantidad >= escala.cantidad_minima:
-                    precio = float(escala.precio)
+        for escala in escalas:
 
-            subtotal = precio * cantidad
+            if cantidad >= escala.cantidad_minima:
+                precio = float(escala.precio)
 
-            # Guardar datos para mostrar
-            item['precio_actual'] = precio
-            item['subtotal'] = round(subtotal, 2)
+        subtotal = precio * cantidad
 
-            total += subtotal
+        item['precio_actual'] = precio
+        item['subtotal'] = round(subtotal, 2)
 
-        return round(total, 2)
+        total += subtotal
+
+    return round(total, 2)
 
     def obtener_cantidad_total(self):
 

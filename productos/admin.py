@@ -5,17 +5,27 @@ from .models import (
     Producto,
     Categoria,
     EscalaPrecio,
+    VarianteProducto,
     Pedido,
     DetallePedido
 )
+
 
 # =========================
 # INLINE ESCALAS
 # =========================
 
 class EscalaPrecioInline(admin.TabularInline):
-
     model = EscalaPrecio
+    extra = 1
+
+
+# =========================
+# INLINE VARIANTES
+# =========================
+
+class VarianteProductoInline(admin.TabularInline):
+    model = VarianteProducto
     extra = 1
 
 
@@ -40,7 +50,8 @@ class ProductoAdmin(admin.ModelAdmin):
     )
 
     inlines = [
-        EscalaPrecioInline
+        EscalaPrecioInline,
+        VarianteProductoInline
     ]
 
 
@@ -116,19 +127,7 @@ class ClienteAdmin(admin.ModelAdmin):
 # REGISTROS
 # =========================
 
-admin.site.register(
-    Cliente,
-    ClienteAdmin
-)
-
-admin.site.register(
-    Producto,
-    ProductoAdmin
-)
-
+admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(Producto, ProductoAdmin)
 admin.site.register(Categoria)
-
-admin.site.register(
-    Pedido,
-    PedidoAdmin
-)
+admin.site.register(Pedido, PedidoAdmin)

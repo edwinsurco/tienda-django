@@ -55,8 +55,6 @@
 
 <div class="contenedor">
 
-    <!-- BUSCADOR -->
-
     <form method="GET" action="" class="buscador">
 
         <input type="text"
@@ -70,8 +68,6 @@
 
     </form>
 
-    <!-- CATEGORIAS -->
-
     <div class="categorias-wrapper">
 
         <button class="flecha-cat izquierda"
@@ -83,11 +79,7 @@
         <div class="categorias" id="categoriasScroll">
 
             <a href="{% url 'lista_productos' %}">
-                <span class="categoria
-                {% if not categoria_actual %}
-                activa
-                {% endif %}
-                ">
+                <span class="categoria {% if not categoria_actual %}activa{% endif %}">
                     Todas
                 </span>
             </a>
@@ -95,11 +87,7 @@
             {% for categoria in categorias %}
 
             <a href="{% url 'productos_por_categoria' categoria.id %}">
-                <span class="categoria
-                {% if categoria_actual and categoria.id == categoria_actual.id %}
-                activa
-                {% endif %}
-                ">
+                <span class="categoria {% if categoria_actual and categoria.id == categoria_actual.id %}activa{% endif %}">
                     {{ categoria.nombre }}
                 </span>
             </a>
@@ -116,8 +104,6 @@
 
     </div>
 
-    <!-- PRODUCTOS -->
-
     <div class="productos" id="listaProductos">
 
         {% for producto in productos %}
@@ -125,18 +111,18 @@
         <div class="card producto-item">
 
             {% if producto.tiene_escalas %}
-                <div class="punto-escalado"></div>
+            <div class="punto-escalado"></div>
             {% endif %}
 
             {% if producto.precio_actual != producto.precio %}
-                <span class="etiqueta-oferta">
-                    OFERTA
-                </span>
+            <span class="etiqueta-oferta">
+                OFERTA
+            </span>
             {% endif %}
 
             {% if producto.imagen %}
-                <img src="{{ producto.imagen.url }}"
-                     class="imagen">
+            <img src="{{ producto.imagen.url }}"
+                 class="imagen">
             {% endif %}
 
             <h2>
@@ -147,19 +133,19 @@
 
                 {% if producto.tiene_descuento %}
 
-                    <span class="precio-anterior">
-                        S/ {{ producto.precio }}
-                    </span>
+                <span class="precio-anterior">
+                    S/ {{ producto.precio }}
+                </span>
 
-                    <span class="precio-descuento">
-                        S/ {{ producto.precio_actual }}
-                    </span>
+                <span class="precio-descuento">
+                    S/ {{ producto.precio_actual }}
+                </span>
 
                 {% else %}
 
-                    <span class="precio-normal">
-                        S/ {{ producto.precio }}
-                    </span>
+                <span class="precio-normal">
+                    S/ {{ producto.precio }}
+                </span>
 
                 {% endif %}
 
@@ -169,25 +155,51 @@
                 {{ producto.descripcion }}
             </p>
 
-            <a href="{% url 'agregar_producto' producto.id %}">
-                <button class="btn-agregar">
+            <form method="POST"
+                  action="{% url 'agregar_producto' producto.id %}">
+
+                {% csrf_token %}
+
+                {% if producto.variantes.all %}
+
+                <select name="variante_id"
+                        class="select-variante"
+                        required>
+
+                    <option value="">
+                        Elegir opción
+                    </option>
+
+                    {% for variante in producto.variantes.all %}
+
+                    <option value="{{ variante.id }}">
+                        {{ variante.nombre }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                {% endif %}
+
+                <button class="btn-agregar"
+                        type="submit">
 
                     ➕ Agregar
 
                     {% if producto.cantidad_en_carrito > 0 %}
-                        ({{ producto.cantidad_en_carrito }})
+                    ({{ producto.cantidad_en_carrito }})
                     {% endif %}
 
                 </button>
-            </a>
+
+            </form>
 
         </div>
 
         {% endfor %}
 
     </div>
-
-    <!-- VER MAS: ahora está antes del footer y dentro del contenedor -->
 
     <div class="ver-mas">
         <button id="btnVerMas" type="button">
@@ -249,6 +261,7 @@ setInterval(() => {
 
 function moverCategorias(cantidad) {
     const contenedor = document.getElementById("categoriasScroll");
+
     contenedor.scrollBy({
         left: cantidad,
         behavior: "smooth"

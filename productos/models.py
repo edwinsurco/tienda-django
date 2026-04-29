@@ -32,6 +32,18 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
+class VarianteProducto(models.Model):
+
+    producto = models.ForeignKey(
+        Producto,
+        on_delete=models.CASCADE,
+        related_name='variantes'
+    )
+
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f"{self.producto.nombre} - {self.nombre}"
 
 class EscalaPrecio(models.Model):
 

@@ -6,6 +6,7 @@ import urllib.parse
 from .models import Pedido
 from django.http import JsonResponse
 from .models import Cliente
+from .models import VarianteProducto
 
 from .models import (
     Producto,
@@ -99,7 +100,20 @@ def agregar_producto(request, producto_id):
         id=producto_id
     )
 
-    carrito.agregar(producto)
+    variante = None
+
+    if request.method == "POST":
+
+        variante_id = request.POST.get("variante_id")
+
+        if variante_id:
+
+            variante = get_object_or_404(
+                VarianteProducto,
+                id=variante_id
+            )
+
+    carrito.agregar(producto, variante)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 

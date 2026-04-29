@@ -670,7 +670,7 @@ td {
 }
 
 .ver-mas button {
-    background: #e84118;
+    background: #e73f15;
     color: white;
     border: none;
     padding: 16px 60px;
@@ -724,4 +724,14 @@ td {
         bottom: 80px;
     }
 
+}
+
+.select-variante {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 14px;
 }
