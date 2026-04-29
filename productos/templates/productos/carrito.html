@@ -75,12 +75,12 @@ S/ {{ item.precio_actual }}
 <td>
 
 <form method="POST"
-      action="{% url 'actualizar_cantidad' key %}"
+      action="{% url 'actualizar_cantidad' item.producto_id %}"
       class="form-cantidad">
 
 {% csrf_token %}
 
-<a href="{% url 'restar_producto' key %}">
+<a href="{% url 'restar_producto' item.producto_id %}">
 <button type="button">−</button>
 </a>
 
@@ -90,7 +90,7 @@ S/ {{ item.precio_actual }}
        min="1"
        class="input-cantidad">
 
-<a href="{% url 'sumar_producto' key %}">
+<a href="{% url 'sumar_producto' item.producto_id %}">
 <button type="button">+</button>
 </a>
 
@@ -109,7 +109,7 @@ S/ {{ item.subtotal }}
 
 <td>
 
-<a href="{% url 'eliminar_producto' key %}">
+<a href="{% url 'eliminar_producto' item.producto_id %}">
 <button>❌</button>
 </a>
 
