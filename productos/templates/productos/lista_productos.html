@@ -7,14 +7,13 @@
 
     {% load static %}
     {% load carrito_extras %}
- 
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet"
           href="{% static 'css/estilos.css' %}">
 
 </head>
-
-
 
 <body>
 
@@ -22,7 +21,7 @@
    class="whatsapp-flotante"
    target="_blank">
     💬
-</a>    
+</a>
 
 <header class="header-tienda">
 
@@ -49,74 +48,54 @@
 </header>
 
 <div class="banner-promocion">
-
     <span id="textoBanner">
         🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad
     </span>
-
 </div>
 
-<script>
-const mensajesBanner = [
-    "🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad",
-    "🔥 Descuentos por compras al por mayor",
-    "📦 Atención rápida por WhatsApp"
-];
-
-let indiceBanner = 0;
-
-setInterval(() => {
-    indiceBanner = (indiceBanner + 1) % mensajesBanner.length;
-    document.getElementById("textoBanner").textContent = mensajesBanner[indiceBanner];
-}, 4000);
-</script>
-
-
 <div class="contenedor">
-
-    
 
     <!-- BUSCADOR -->
 
     <form method="GET" action="" class="buscador">
 
-    <input type="text"
-           name="buscar"
-           placeholder="🔍 Buscar producto..."
-           value="{{ request.GET.buscar }}">
+        <input type="text"
+               name="buscar"
+               placeholder="🔍 Buscar producto..."
+               value="{{ request.GET.buscar }}">
 
-    <button type="submit">
-        🔍 Buscar
-    </button>
+        <button type="submit">
+            🔍 Buscar
+        </button>
 
-</form>
-
-
+    </form>
 
     <!-- CATEGORIAS -->
 
     <div class="categorias-wrapper">
 
-        <button class="flecha-cat izquierda" onclick="moverCategorias(-200)">
+        <button class="flecha-cat izquierda"
+                type="button"
+                onclick="moverCategorias(-200)">
             ‹
         </button>
 
         <div class="categorias" id="categoriasScroll">
 
             <a href="{% url 'lista_productos' %}">
-                <span class="categoria 
+                <span class="categoria
                 {% if not categoria_actual %}
                 activa
                 {% endif %}
                 ">
-                     Todas
+                    Todas
                 </span>
             </a>
 
             {% for categoria in categorias %}
 
             <a href="{% url 'productos_por_categoria' categoria.id %}">
-                <span class="categoria 
+                <span class="categoria
                 {% if categoria_actual and categoria.id == categoria_actual.id %}
                 activa
                 {% endif %}
@@ -129,22 +108,13 @@ setInterval(() => {
 
         </div>
 
-        <button class="flecha-cat derecha" onclick="moverCategorias(200)">
+        <button class="flecha-cat derecha"
+                type="button"
+                onclick="moverCategorias(200)">
             ›
         </button>
 
     </div>
-
-    <script>
-    function moverCategorias(cantidad) {
-        const contenedor = document.getElementById("categoriasScroll");
-        contenedor.scrollBy({
-            left: cantidad,
-            behavior: "smooth"
-        });
-    }
-    </script>
-    
 
     <!-- PRODUCTOS -->
 
@@ -153,86 +123,62 @@ setInterval(() => {
         {% for producto in productos %}
 
         <div class="card producto-item">
-        
-        {% if producto.tiene_escalas %}
-        <div class="punto-escalado"></div>
-        {% endif %}
 
-            <!-- IMAGEN -->
-        {% if producto.precio_actual != producto.precio %}
-
-        <span class="etiqueta-oferta">
-
-        OFERTA
-
-        </span>
-
-        {% endif %}     
-
-            {% if producto.imagen %}
-
-                <img src="{{ producto.imagen.url }}"
-                     class="imagen">
-
+            {% if producto.tiene_escalas %}
+                <div class="punto-escalado"></div>
             {% endif %}
 
-            <!-- NOMBRE -->
+            {% if producto.precio_actual != producto.precio %}
+                <span class="etiqueta-oferta">
+                    OFERTA
+                </span>
+            {% endif %}
+
+            {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}"
+                     class="imagen">
+            {% endif %}
 
             <h2>
-
                 {{ producto.nombre }}
-
             </h2>
-            
-
-            <!-- PRECIO ESCALONADO -->
 
             <div class="precio">
 
-            {% if producto.tiene_descuento %}
+                {% if producto.tiene_descuento %}
 
-                <span class="precio-anterior">
-                   S/ {{ producto.precio }}
-                </span>
+                    <span class="precio-anterior">
+                        S/ {{ producto.precio }}
+                    </span>
 
-                <span class="precio-descuento">
-                   S/ {{ producto.precio_actual }}
-                </span>
+                    <span class="precio-descuento">
+                        S/ {{ producto.precio_actual }}
+                    </span>
 
-            {% else %}
+                {% else %}
 
-    <span class="precio-normal">
-        S/ {{ producto.precio }}
-    </span>
+                    <span class="precio-normal">
+                        S/ {{ producto.precio }}
+                    </span>
 
-{% endif %}
+                {% endif %}
 
-</div>
-
-            <!-- DESCRIPCION -->
+            </div>
 
             <p>
-
                 {{ producto.descripcion }}
-
             </p>
 
-            <!-- BOTON AGREGAR -->
-
             <a href="{% url 'agregar_producto' producto.id %}">
-
                 <button class="btn-agregar">
 
                     ➕ Agregar
 
                     {% if producto.cantidad_en_carrito > 0 %}
-
                         ({{ producto.cantidad_en_carrito }})
-
                     {% endif %}
 
                 </button>
-
             </a>
 
         </div>
@@ -241,46 +187,15 @@ setInterval(() => {
 
     </div>
 
+    <!-- VER MAS: ahora está antes del footer y dentro del contenedor -->
+
+    <div class="ver-mas">
+        <button id="btnVerMas" type="button">
+            VER MÁS ↓
+        </button>
+    </div>
+
 </div>
-
-<div class="ver-mas">
-    <button id="btnVerMas">
-        VER MÁS ↓
-    </button>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-
-    const productos = document.querySelectorAll(".producto-item");
-    const boton = document.getElementById("btnVerMas");
-
-    let cantidadVisible = window.innerWidth <= 768 ? 12 : 24;
-    let incremento = window.innerWidth <= 768 ? 12 : 24;
-
-    function mostrarProductos() {
-        productos.forEach((producto, index) => {
-            if (index < cantidadVisible) {
-                producto.style.display = "block";
-            } else {
-                producto.style.display = "none";
-            }
-        });
-
-        if (cantidadVisible >= productos.length) {
-            boton.style.display = "none";
-        }
-    }
-
-    boton.addEventListener("click", function() {
-        cantidadVisible += incremento;
-        mostrarProductos();
-    });
-
-    mostrarProductos();
-
-});
-</script>
 
 <footer class="footer-tienda">
 
@@ -301,17 +216,13 @@ document.addEventListener("DOMContentLoaded", function() {
         <a href="https://www.facebook.com/share/18LdQNy5nB/"
            target="_blank"
            class="btn-red facebook">
-
             f
-
         </a>
 
-        <a href="https://tiktok.com/@momentos.com70"
+        <a href="https://www.tiktok.com/@momentos.com70"
            target="_blank"
            class="btn-red tiktok">
-
             ♪
-
         </a>
 
     </div>
@@ -319,18 +230,66 @@ document.addEventListener("DOMContentLoaded", function() {
 </footer>
 
 <a href="#" class="btn-subir">
-⬆
+    ⬆
 </a>
 
-<div class="ver-mas">
-<button>
-VER MÁS ↓
-</button>
-</div>
+<script>
+const mensajesBanner = [
+    "🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad",
+    "🔥 Descuentos por compras al por mayor",
+    "📦 Atención rápida por WhatsApp"
+];
 
-<a href="#" class="btn-subir">
-⬆
-</a>
+let indiceBanner = 0;
+
+setInterval(() => {
+    indiceBanner = (indiceBanner + 1) % mensajesBanner.length;
+    document.getElementById("textoBanner").textContent = mensajesBanner[indiceBanner];
+}, 4000);
+
+function moverCategorias(cantidad) {
+    const contenedor = document.getElementById("categoriasScroll");
+    contenedor.scrollBy({
+        left: cantidad,
+        behavior: "smooth"
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const productos = document.querySelectorAll(".producto-item");
+    const boton = document.getElementById("btnVerMas");
+
+    let cantidadVisible = window.innerWidth <= 768 ? 12 : 24;
+    let incremento = window.innerWidth <= 768 ? 12 : 24;
+
+    function mostrarProductos() {
+
+        productos.forEach((producto, index) => {
+
+            if (index < cantidadVisible) {
+                producto.style.display = "block";
+            } else {
+                producto.style.display = "none";
+            }
+
+        });
+
+        if (cantidadVisible >= productos.length) {
+            boton.style.display = "none";
+        }
+
+    }
+
+    boton.addEventListener("click", function() {
+        cantidadVisible += incremento;
+        mostrarProductos();
+    });
+
+    mostrarProductos();
+
+});
+</script>
 
 </body>
 
