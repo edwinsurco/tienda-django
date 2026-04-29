@@ -590,3 +590,58 @@ td {
     }
 
 }
+
+/* ========================= */
+/* FOOTER EMPRESA */
+/* ========================= */
+
+.footer-tienda {
+    margin-top: 50px;
+    background: #192a56;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.footer-tienda h3 {
+    margin-bottom: 12px;
+    font-size: 24px;
+}
+
+.footer-tienda p {
+    margin: 6px 0;
+    font-size: 15px;
+}
+
+.redes-sociales {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-red {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-red:hover {
+    transform: scale(1.12);
+}
+
+.facebook {
+    background: #1877f2;
+}
+
+.tiktok {
+    background: #000000;
+}
