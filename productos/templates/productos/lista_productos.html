@@ -153,6 +153,10 @@ setInterval(() => {
         {% for producto in productos %}
 
         <div class="card">
+        
+        {% if producto.tiene_escalas %}
+        <div class="punto-escalado"></div>
+        {% endif %}
 
             <!-- IMAGEN -->
         {% if producto.precio_actual != producto.precio %}

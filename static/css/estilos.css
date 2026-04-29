@@ -645,3 +645,17 @@ td {
 .tiktok {
     background: #000000;
 }
+
+/* Punto rojo producto con escala */
+
+.punto-escalado{
+    position:absolute;
+    top:12px;
+    right:12px;
+    width:12px;
+    height:12px;
+    background:#e84118;
+    border-radius:50%;
+    box-shadow:0 0 8px rgba(232,65,24,.45);
+    z-index:20;
+}

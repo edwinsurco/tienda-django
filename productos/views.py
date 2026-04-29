@@ -53,6 +53,8 @@ def lista_productos(request):
         escalas = producto.escalas.all().order_by(
             'cantidad_minima'
         )
+        
+        producto.tiene_escalas = escalas.exists()
 
         for escala in escalas:
 
