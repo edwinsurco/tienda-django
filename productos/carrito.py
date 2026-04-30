@@ -11,6 +11,7 @@ class Carrito:
             carrito = self.session['carrito'] = {}
 
         self.carrito = carrito
+        self.limpiar_invalidos()
 
     def agregar(self, producto, variante=None):
 
@@ -150,3 +151,21 @@ class Carrito:
     def guardar(self):
         self.session['carrito'] = self.carrito
         self.session.modified = True
+
+    def limpiar_invalidos(self):
+
+    from .models import Producto
+
+    cambios = False
+
+    for key in list(self.carrito.keys()):
+
+        producto_id = self.carrito[key].get('producto_id')
+
+        if not Producto.objects.filter(id=producto_id).exists():
+
+            del self.carrito[key]
+            cambios = True
+
+    if cambios:
+        self.guardar()

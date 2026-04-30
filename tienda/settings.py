@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7l5xmtk5-q+8hb5@=pubtc1ne3&^=h*+rpl%q934t#@w5#osdo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     "tienda-django-wgi6.onrender.com",
