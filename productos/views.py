@@ -257,16 +257,18 @@ def crear_pedido(request):
             telefono = form.cleaned_data['celular']
             direccion = form.cleaned_data['direccion']
             correo = form.cleaned_data['correo']
-
+            
             cliente, creado = Cliente.objects.update_or_create(
                 dni_ruc=dni_ruc,
                 defaults={
+                    'user': request.user if request.user.is_authenticated else None,
                     'nombre_razon_social': nombre,
                     'celular': telefono,
                     'direccion': direccion,
                     'correo': correo
                 }
             )
+
 
             pedido = Pedido.objects.create(
                 cliente=cliente,
@@ -308,10 +310,28 @@ def crear_pedido(request):
                 pedido_id=pedido.id
             )
 
+    
     else:
 
-        form = PedidoForm()
+        datos_iniciales = {}
 
+        if request.user.is_authenticated:
+
+            try:
+                cliente = Cliente.objects.get(user=request.user)
+
+                datos_iniciales = {
+                    'dni_ruc': cliente.dni_ruc,
+                    'nombre_razon_social': cliente.nombre_razon_social,
+                    'celular': cliente.celular,
+                    'direccion': cliente.direccion,
+                    'correo': cliente.correo,
+                }
+
+            except Cliente.DoesNotExist:
+                pass
+
+        form = PedidoForm(initial=datos_iniciales)
     return render(
         request,
         'productos/crear_pedido.html',
