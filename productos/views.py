@@ -118,44 +118,29 @@ def agregar_producto(request, producto_id):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def eliminar_producto(request, producto_id):
+def eliminar_producto(request, carrito_key):
 
     carrito = Carrito(request)
 
-    producto = get_object_or_404(
-        Producto,
-        id=producto_id
-    )
-
-    carrito.eliminar(producto)
+    carrito.eliminar(carrito_key)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def sumar_producto(request, producto_id):
+def sumar_producto(request, carrito_key):
 
     carrito = Carrito(request)
 
-    producto = get_object_or_404(
-        Producto,
-        id=producto_id
-    )
-
-    carrito.sumar(producto)
+    carrito.sumar(carrito_key)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def restar_producto(request, producto_id):
+def restar_producto(request, carrito_key):
 
     carrito = Carrito(request)
 
-    producto = get_object_or_404(
-        Producto,
-        id=producto_id
-    )
-
-    carrito.restar(producto)
+    carrito.restar(carrito_key)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
@@ -344,20 +329,15 @@ def pedido_exitoso(request, pedido_id):
         }
     )
 
-def actualizar_cantidad(request, producto_id):
+def actualizar_cantidad(request, carrito_key):
 
     if request.method == "POST":
 
         carrito = Carrito(request)
 
-        cantidad = int(request.POST.get("cantidad"))
+        cantidad = int(request.POST.get("cantidad", 1))
 
-        producto = get_object_or_404(
-            Producto,
-            id=producto_id
-        )
-
-        carrito.actualizar(producto, cantidad)
+        carrito.actualizar(carrito_key, cantidad)
 
     return redirect('ver_carrito')
 

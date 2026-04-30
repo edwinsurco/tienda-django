@@ -28,12 +28,12 @@ class Carrito:
         if variante_id:
             carrito_key = f"{producto_id}_{variante_id}"
 
+        nombre_producto = producto.nombre
+
+        if variante_nombre:
+            nombre_producto = f"{producto.nombre} - {variante_nombre}"
+
         if carrito_key not in self.carrito:
-
-            nombre_producto = producto.nombre
-
-            if variante_nombre:
-                nombre_producto = f"{producto.nombre} - {variante_nombre}"
 
             self.carrito[carrito_key] = {
                 'producto_id': producto_id,
@@ -44,61 +44,67 @@ class Carrito:
             }
 
         else:
+
             self.carrito[carrito_key]['cantidad'] += 1
 
         self.guardar()
 
-    def eliminar(self, producto):
-        producto_id = str(producto.id)
+    def eliminar(self, carrito_key):
 
-        claves_a_eliminar = []
+        carrito_key = str(carrito_key)
 
-        for key, item in self.carrito.items():
-            if item.get('producto_id', key) == producto_id:
-                claves_a_eliminar.append(key)
-
-        for key in claves_a_eliminar:
-            del self.carrito[key]
+        if carrito_key in self.carrito:
+            del self.carrito[carrito_key]
 
         self.guardar()
 
-    def sumar(self, producto):
-        producto_id = str(producto.id)
+    def sumar(self, carrito_key):
 
-        for key, item in self.carrito.items():
-            if item.get('producto_id', key) == producto_id:
-                self.carrito[key]['cantidad'] += 1
-                break
+        carrito_key = str(carrito_key)
 
-        self.guardar()
-
-    def restar(self, producto):
-        producto_id = str(producto.id)
-
-        clave_encontrada = None
-
-        for key, item in self.carrito.items():
-            if item.get('producto_id', key) == producto_id:
-                clave_encontrada = key
-                break
-
-        if clave_encontrada:
-            self.carrito[clave_encontrada]['cantidad'] -= 1
-
-            if self.carrito[clave_encontrada]['cantidad'] <= 0:
-                del self.carrito[clave_encontrada]
+        if carrito_key in self.carrito:
+            self.carrito[carrito_key]['cantidad'] += 1
 
         self.guardar()
 
-    def actualizar(self, producto, cantidad):
-        producto_id = str(producto.id)
+    def restar(self, carrito_key):
 
-        for key, item in self.carrito.items():
-            if item.get('producto_id', key) == producto_id:
-                self.carrito[key]['cantidad'] = cantidad
-                break
+        carrito_key = str(carrito_key)
+
+        if carrito_key in self.carrito:
+
+            self.carrito[carrito_key]['cantidad'] -= 1
+
+            if self.carrito[carrito_key]['cantidad'] <= 0:
+                del self.carrito[carrito_key]
 
         self.guardar()
+
+    def actualizar(self, carrito_key, cantidad):
+
+        carrito_key = str(carrito_key)
+
+        if carrito_key in self.carrito:
+
+            if cantidad <= 0:
+                del self.carrito[carrito_key]
+            else:
+                self.carrito[carrito_key]['cantidad'] = cantidad
+
+        self.guardar()
+
+    def obtener_cantidad_producto(self, producto_id):
+
+        producto_id = str(producto_id)
+
+        total = 0
+
+        for item in self.carrito.values():
+
+            if str(item.get('producto_id')) == producto_id:
+                total += item['cantidad']
+
+        return total
 
     def obtener_total(self):
 
@@ -106,11 +112,11 @@ class Carrito:
 
         for key, item in self.carrito.items():
 
-            producto = Producto.objects.get(
-                id=item.get('producto_id', key)
-            )
+            producto_id = item.get('producto_id', key)
 
-            cantidad = item['cantidad']
+            producto = Producto.objects.get(id=producto_id)
+
+            cantidad_total_producto = self.obtener_cantidad_producto(producto.id)
 
             precio = float(producto.precio)
 
@@ -119,10 +125,11 @@ class Carrito:
             )
 
             for escala in escalas:
-                if cantidad >= escala.cantidad_minima:
+
+                if cantidad_total_producto >= escala.cantidad_minima:
                     precio = float(escala.precio)
 
-            subtotal = precio * cantidad
+            subtotal = precio * item['cantidad']
 
             item['precio_actual'] = precio
             item['subtotal'] = round(subtotal, 2)
