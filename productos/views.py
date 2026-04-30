@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegistroClienteForm
 from .models import Cliente
+from django.http import HttpResponse
+
 
 from .models import (
     Producto,
@@ -532,3 +534,16 @@ def mis_pedidos(request):
             'pedidos': pedidos
         }
     )
+def crear_admin_temporal(request):
+
+    if not User.objects.filter(username="admin").exists():
+
+        User.objects.create_superuser(
+            username="admin",
+            email="admin@gmail.com",
+            password="Admin12345"
+        )
+
+        return HttpResponse("Admin creado correctamente")
+
+    return HttpResponse("El admin ya existe")

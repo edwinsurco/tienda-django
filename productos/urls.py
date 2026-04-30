@@ -100,4 +100,10 @@ urlpatterns = [
         views.mis_pedidos,
         name='mis_pedidos'
         ),
+    
+    path(
+        'crear-admin-temporal/',
+        views.crear_admin_temporal,
+        name='crear_admin_temporal'
+        ),
 ]
