@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Mis pedidos</title>
+
+{% load static %}
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<header class="header-tienda">
+
+    <div class="logo-tienda">
+        🛍️ <span>Mi Tienda</span>
+    </div>
+
+    <nav class="nav-tienda">
+
+        <a href="{% url 'lista_productos' %}">
+            Inicio
+        </a>
+
+        <a href="{% url 'mis_pedidos' %}" class="nav-activo">
+            📦 Mis pedidos
+        </a>
+
+        <a href="{% url 'ver_carrito' %}" class="carrito-header">
+            🛒 Carrito
+        </a>
+
+    </nav>
+
+</header>
+
+<div class="contenedor">
+
+<h1 style="text-align:center;">
+📦 Mis pedidos
+</h1>
+
+{% if pedidos %}
+
+<table>
+
+<tr>
+    <th>N° Pedido</th>
+    <th>Fecha</th>
+    <th>Total</th>
+    <th>Estado</th>
+</tr>
+
+{% for pedido in pedidos %}
+
+<tr>
+    <td>#{{ pedido.id }}</td>
+    <td>{{ pedido.fecha }}</td>
+    <td>S/ {{ pedido.total }}</td>
+    <td>{{ pedido.estado }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% else %}
+
+<p style="text-align:center; font-size:18px;">
+Aún no tienes pedidos registrados.
+</p>
+
+{% endif %}
+
+</div>
+
+</body>
+
+</html>

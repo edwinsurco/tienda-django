@@ -514,12 +514,16 @@ def mis_pedidos(request):
     if not request.user.is_authenticated:
         return redirect('login_cliente')
 
-    cliente = Cliente.objects.filter(user=request.user).first()
+    cliente = Cliente.objects.filter(
+        user=request.user
+    ).first()
 
-    pedidos = []
+    pedidos = Pedido.objects.none()
 
     if cliente:
-        pedidos = Pedido.objects.filter(cliente=cliente).order_by('-fecha')
+        pedidos = Pedido.objects.filter(
+            cliente=cliente
+        ).order_by('-fecha')
 
     return render(
         request,
