@@ -508,3 +508,23 @@ def logout_cliente(request):
     logout(request)
 
     return redirect('lista_productos')
+
+def mis_pedidos(request):
+
+    if not request.user.is_authenticated:
+        return redirect('login_cliente')
+
+    cliente = Cliente.objects.filter(user=request.user).first()
+
+    pedidos = []
+
+    if cliente:
+        pedidos = Pedido.objects.filter(cliente=cliente).order_by('-fecha')
+
+    return render(
+        request,
+        'productos/mis_pedidos.html',
+        {
+            'pedidos': pedidos
+        }
+    )

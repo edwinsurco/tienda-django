@@ -48,6 +48,10 @@
 
         {% if user.is_authenticated %}
 
+        <a href="{% url 'mis_pedidos' %}">
+            📦 Mis pedidos
+        </a>
+
             <a href="#"
                class="usuario-header">
                 👤 {{ user.username }}

@@ -93,4 +93,11 @@ urlpatterns = [
         views.logout_cliente,
         name='logout_cliente'
         ),
+    
+
+    path(
+        'mis-pedidos/',
+        views.mis_pedidos,
+        name='mis_pedidos'
+        ),
 ]
