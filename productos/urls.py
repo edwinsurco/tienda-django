@@ -75,4 +75,22 @@ urlpatterns = [
         name='buscar_cliente'
     ),
 
+
+    path(
+        'registro/',
+        views.registro_cliente,
+        name='registro_cliente'
+    ),
+
+    path(
+        'login/',
+        views.login_cliente,
+        name='login_cliente'
+        ),
+
+    path(
+        'logout/',
+        views.logout_cliente,
+        name='logout_cliente'
+        ),
 ]

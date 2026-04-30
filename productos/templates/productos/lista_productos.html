@@ -8,7 +8,8 @@
     {% load static %}
     {% load carrito_extras %}
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet"
           href="{% static 'css/estilos.css' %}">
@@ -31,7 +32,8 @@
 
     <nav class="nav-tienda">
 
-        <a href="{% url 'lista_productos' %}" class="nav-activo">
+        <a href="{% url 'lista_productos' %}"
+           class="nav-activo">
             Inicio
         </a>
 
@@ -39,23 +41,53 @@
             📦 Pedidos
         </a>
 
-        <a href="{% url 'ver_carrito' %}" class="carrito-header">
+        <a href="{% url 'ver_carrito' %}"
+           class="carrito-header">
             🛒 Carrito
         </a>
+
+        {% if user.is_authenticated %}
+
+            <a href="#"
+               class="usuario-header">
+                👤 {{ user.username }}
+            </a>
+
+            <a href="{% url 'logout_cliente' %}">
+                Salir
+            </a>
+
+        {% else %}
+
+            <a href="{% url 'login_cliente' %}">
+                Iniciar sesión
+            </a>
+
+            <a href="{% url 'registro_cliente' %}">
+                Registrarse
+            </a>
+
+        {% endif %}
 
     </nav>
 
 </header>
 
 <div class="banner-promocion">
+
     <span id="textoBanner">
         🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad
     </span>
+
 </div>
 
 <div class="contenedor">
 
-    <form method="GET" action="" class="buscador">
+    <!-- BUSCADOR -->
+
+    <form method="GET"
+          action=""
+          class="buscador">
 
         <input type="text"
                name="buscar"
@@ -68,6 +100,8 @@
 
     </form>
 
+    <!-- CATEGORÍAS -->
+
     <div class="categorias-wrapper">
 
         <button class="flecha-cat izquierda"
@@ -76,7 +110,8 @@
             ‹
         </button>
 
-        <div class="categorias" id="categoriasScroll">
+        <div class="categorias"
+             id="categoriasScroll">
 
             <a href="{% url 'lista_productos' %}">
                 <span class="categoria {% if not categoria_actual %}activa{% endif %}">
@@ -104,7 +139,10 @@
 
     </div>
 
-    <div class="productos" id="listaProductos">
+    <!-- PRODUCTOS -->
+
+    <div class="productos"
+         id="listaProductos">
 
         {% for producto in productos %}
 
@@ -133,19 +171,19 @@
 
                 {% if producto.tiene_descuento %}
 
-                <span class="precio-anterior">
-                    S/ {{ producto.precio }}
-                </span>
+                    <span class="precio-anterior">
+                        S/ {{ producto.precio }}
+                    </span>
 
-                <span class="precio-descuento">
-                    S/ {{ producto.precio_actual }}
-                </span>
+                    <span class="precio-descuento">
+                        S/ {{ producto.precio_actual }}
+                    </span>
 
                 {% else %}
 
-                <span class="precio-normal">
-                    S/ {{ producto.precio }}
-                </span>
+                    <span class="precio-normal">
+                        S/ {{ producto.precio }}
+                    </span>
 
                 {% endif %}
 
@@ -188,7 +226,7 @@
                     ➕ Agregar
 
                     {% if producto.cantidad_en_carrito > 0 %}
-                    ({{ producto.cantidad_en_carrito }})
+                        ({{ producto.cantidad_en_carrito }})
                     {% endif %}
 
                 </button>
@@ -201,13 +239,20 @@
 
     </div>
 
+    <!-- VER MÁS -->
+
     <div class="ver-mas">
-        <button id="btnVerMas" type="button">
+
+        <button id="btnVerMas"
+                type="button">
             VER MÁS ↓
         </button>
+
     </div>
 
 </div>
+
+<!-- FOOTER -->
 
 <footer class="footer-tienda">
 
@@ -241,11 +286,15 @@
 
 </footer>
 
-<a href="#" class="btn-subir">
+<!-- SUBIR -->
+
+<a href="#"
+   class="btn-subir">
     ⬆
 </a>
 
 <script>
+
 const mensajesBanner = [
     "🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad",
     "🔥 Descuentos por compras al por mayor",
@@ -255,26 +304,43 @@ const mensajesBanner = [
 let indiceBanner = 0;
 
 setInterval(() => {
-    indiceBanner = (indiceBanner + 1) % mensajesBanner.length;
-    document.getElementById("textoBanner").textContent = mensajesBanner[indiceBanner];
+
+    indiceBanner =
+        (indiceBanner + 1) %
+        mensajesBanner.length;
+
+    document.getElementById("textoBanner").textContent =
+        mensajesBanner[indiceBanner];
+
 }, 4000);
 
 function moverCategorias(cantidad) {
-    const contenedor = document.getElementById("categoriasScroll");
+
+    const contenedor =
+        document.getElementById("categoriasScroll");
 
     contenedor.scrollBy({
         left: cantidad,
         behavior: "smooth"
     });
+
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener(
+"DOMContentLoaded",
+function() {
 
-    const productos = document.querySelectorAll(".producto-item");
-    const boton = document.getElementById("btnVerMas");
+    const productos =
+        document.querySelectorAll(".producto-item");
 
-    let cantidadVisible = window.innerWidth <= 768 ? 12 : 24;
-    let incremento = window.innerWidth <= 768 ? 12 : 24;
+    const boton =
+        document.getElementById("btnVerMas");
+
+    let cantidadVisible =
+        window.innerWidth <= 768 ? 12 : 24;
+
+    let incremento =
+        window.innerWidth <= 768 ? 12 : 24;
 
     function mostrarProductos() {
 
@@ -294,16 +360,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
     }
 
-    boton.addEventListener("click", function() {
-        cantidadVisible += incremento;
-        mostrarProductos();
-    });
+    boton.addEventListener(
+        "click",
+        function() {
+
+            cantidadVisible += incremento;
+            mostrarProductos();
+
+        }
+    );
 
     mostrarProductos();
 
 });
+
 </script>
 
 </body>
-
 </html>

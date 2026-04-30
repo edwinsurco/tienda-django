@@ -7,6 +7,10 @@ from .models import Pedido
 from django.http import JsonResponse
 from .models import Cliente
 from .models import VarianteProducto
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
+from .forms import RegistroClienteForm
+from .models import Cliente
 
 from .models import (
     Producto,
@@ -395,3 +399,92 @@ def buscar_cliente(request):
         }
 
     return JsonResponse(data)
+
+
+def registro_cliente(request):
+
+    if request.method == "POST":
+
+        form = RegistroClienteForm(request.POST)
+
+        if form.is_valid():
+
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+
+            dni_ruc = form.cleaned_data['dni_ruc']
+            nombre = form.cleaned_data['nombre_razon_social']
+            celular = form.cleaned_data['celular']
+            direccion = form.cleaned_data['direccion']
+
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password
+            )
+
+            Cliente.objects.create(
+                user=user,
+                dni_ruc=dni_ruc,
+                nombre_razon_social=nombre,
+                celular=celular,
+                direccion=direccion
+            )
+
+            login(request, user)
+
+            return redirect('lista_productos')
+
+    else:
+
+        form = RegistroClienteForm()
+
+    return render(
+        request,
+        'productos/registro_cliente.html',
+        {
+            'form': form
+        }
+    )
+
+
+def login_cliente(request):
+
+    error = None
+
+    if request.method == "POST":
+
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
+
+        if user is not None:
+
+            login(request, user)
+
+            return redirect('lista_productos')
+
+        else:
+
+            error = "Usuario o contraseña incorrectos"
+
+    return render(
+        request,
+        'productos/login_cliente.html',
+        {
+            'error': error
+        }
+    )
+
+
+def logout_cliente(request):
+
+    logout(request)
+
+    return redirect('lista_productos')

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
@@ -64,6 +65,13 @@ class EscalaPrecio(models.Model):
         return f"{self.cantidad_minima}+ unidades"
 
 class Cliente(models.Model):
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     dni_ruc = models.CharField(
         max_length=20,

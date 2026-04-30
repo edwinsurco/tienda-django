@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Registro Cliente</title>
+
+{% load static %}
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<header class="header-tienda">
+
+    <div class="logo-tienda">
+        🛍️ <span>Mi Tienda</span>
+    </div>
+
+    <nav class="nav-tienda">
+
+        <a href="{% url 'lista_productos' %}">
+            Inicio
+        </a>
+
+        <a href="{% url 'login_cliente' %}">
+            Iniciar sesión
+        </a>
+
+    </nav>
+
+</header>
+
+<div class="contenedor">
+
+<h1>🧾 Crear cuenta</h1>
+
+<form method="POST" class="formulario-cliente">
+
+{% csrf_token %}
+
+{{ form.as_p }}
+
+<button type="submit" class="btn-agregar">
+    Registrarme
+</button>
+
+</form>
+
+<br>
+
+<a href="{% url 'login_cliente' %}">
+    Ya tengo cuenta
+</a>
+
+</div>
+
+</body>
+
+</html>

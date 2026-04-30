@@ -735,3 +735,27 @@ td {
     background: white;
     font-size: 14px;
 }
+
+
+.formulario-cliente {
+    max-width: 480px;
+    margin: 25px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.formulario-cliente p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.formulario-cliente input,
+.formulario-cliente textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
