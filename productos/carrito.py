@@ -161,6 +161,7 @@ class Carrito:
         producto_id = self.carrito[key].get('producto_id')
 
         if not Producto.objects.filter(id=producto_id).exists():
+
             del self.carrito[key]
             cambios = True
 
