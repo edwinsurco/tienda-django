@@ -35,7 +35,6 @@ class Carrito:
             nombre_producto = f"{producto.nombre} - {variante_nombre}"
 
         if carrito_key not in self.carrito:
-
             self.carrito[carrito_key] = {
                 'producto_id': producto_id,
                 'variante_id': variante_id,
@@ -43,9 +42,7 @@ class Carrito:
                 'precio': float(producto.precio),
                 'cantidad': 1
             }
-
         else:
-
             self.carrito[carrito_key]['cantidad'] += 1
 
         self.guardar()
@@ -73,7 +70,6 @@ class Carrito:
         carrito_key = str(carrito_key)
 
         if carrito_key in self.carrito:
-
             self.carrito[carrito_key]['cantidad'] -= 1
 
             if self.carrito[carrito_key]['cantidad'] <= 0:
@@ -86,7 +82,6 @@ class Carrito:
         carrito_key = str(carrito_key)
 
         if carrito_key in self.carrito:
-
             if cantidad <= 0:
                 del self.carrito[carrito_key]
             else:
@@ -101,7 +96,6 @@ class Carrito:
         total = 0
 
         for item in self.carrito.values():
-
             if str(item.get('producto_id')) == producto_id:
                 total += item['cantidad']
 
@@ -110,6 +104,8 @@ class Carrito:
     def obtener_total(self):
 
         total = 0
+
+        self.limpiar_invalidos()
 
         for key, item in self.carrito.items():
 
@@ -126,7 +122,6 @@ class Carrito:
             )
 
             for escala in escalas:
-
                 if cantidad_total_producto >= escala.cantidad_minima:
                     precio = float(escala.precio)
 
@@ -148,22 +143,26 @@ class Carrito:
 
         return cantidad
 
+    def limpiar_invalidos(self):
+
+        cambios = False
+
+        for key in list(self.carrito.keys()):
+
+            producto_id = self.carrito[key].get('producto_id')
+
+            if not producto_id:
+                del self.carrito[key]
+                cambios = True
+                continue
+
+            if not Producto.objects.filter(id=producto_id).exists():
+                del self.carrito[key]
+                cambios = True
+
+        if cambios:
+            self.guardar()
+
     def guardar(self):
         self.session['carrito'] = self.carrito
         self.session.modified = True
-
-    def limpiar_invalidos(self):
-
-    cambios = False
-
-    for key in list(self.carrito.keys()):
-
-        producto_id = self.carrito[key].get('producto_id')
-
-        if not Producto.objects.filter(id=producto_id).exists():
-
-            del self.carrito[key]
-            cambios = True
-
-    if cambios:
-        self.guardar()
