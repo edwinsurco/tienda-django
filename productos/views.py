@@ -286,11 +286,16 @@ def crear_pedido(request):
             mensaje += f"{direccion}%0A%0A"
             mensaje += "Productos:%0A"
 
-            for key, item in carrito.carrito.items():
+            for key, item in list(carrito.carrito.items()):
+
+                producto_id = item.get('producto_id')
+
+                if not Producto.objects.filter(id=producto_id).exists():
+                    continue
 
                 DetallePedido.objects.create(
                     pedido=pedido,
-                    producto_id=key,
+                    producto_id=producto_id,
                     cantidad=item['cantidad'],
                     precio=item['precio_actual'],
                     subtotal=item['subtotal']

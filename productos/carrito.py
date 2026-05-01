@@ -154,8 +154,6 @@ class Carrito:
 
     def limpiar_invalidos(self):
 
-    from .models import Producto
-
     cambios = False
 
     for key in list(self.carrito.keys()):
@@ -163,7 +161,6 @@ class Carrito:
         producto_id = self.carrito[key].get('producto_id')
 
         if not Producto.objects.filter(id=producto_id).exists():
-
             del self.carrito[key]
             cambios = True
 
