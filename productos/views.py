@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .forms import RegistroClienteForm
 from .models import Cliente
+from .models import Cliente, CarritoCliente
 
 
 
@@ -494,6 +495,7 @@ def login_cliente(request):
         if user is not None:
 
             login(request, user)
+            cargar_carrito_guardado(request, user)
 
             return redirect('lista_productos')
 
@@ -539,3 +541,55 @@ def mis_pedidos(request):
             'pedidos': pedidos
         }
     )
+
+def cargar_carrito_guardado(request, user):
+
+    cliente = Cliente.objects.filter(
+        user=user
+    ).first()
+
+    if not cliente:
+        return
+
+    carrito_bd = CarritoCliente.objects.filter(
+        cliente=cliente
+    ).first()
+
+    if not carrito_bd:
+        return
+
+    carrito_session = {}
+
+    for item in carrito_bd.items.all():
+
+        producto_id = str(item.producto.id)
+
+        variante_id = ""
+
+        variante_nombre = ""
+
+        if item.variante:
+
+            variante_id = str(item.variante.id)
+            variante_nombre = item.variante.nombre
+
+        carrito_key = producto_id
+
+        if variante_id:
+            carrito_key = f"{producto_id}_{variante_id}"
+
+        nombre_producto = item.producto.nombre
+
+        if variante_nombre:
+            nombre_producto = f"{item.producto.nombre} - {variante_nombre}"
+
+        carrito_session[carrito_key] = {
+            'producto_id': producto_id,
+            'variante_id': variante_id,
+            'nombre': nombre_producto,
+            'precio': float(item.producto.precio),
+            'cantidad': item.cantidad
+        }
+
+    request.session['carrito'] = carrito_session
+    request.session.modified = True

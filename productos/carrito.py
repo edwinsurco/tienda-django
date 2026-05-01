@@ -1,9 +1,10 @@
-from .models import Producto
+from .models import Producto, Cliente, CarritoCliente, ItemCarritoCliente, VarianteProducto
 
 
 class Carrito:
 
     def __init__(self, request):
+        self.request = request
         self.session = request.session
         carrito = self.session.get('carrito')
 
@@ -166,3 +167,48 @@ class Carrito:
     def guardar(self):
         self.session['carrito'] = self.carrito
         self.session.modified = True
+        self.guardar_en_bd_si_logueado()
+
+    def guardar_en_bd_si_logueado(self):
+
+        if not self.request.user.is_authenticated:
+            return
+
+        cliente = Cliente.objects.filter(
+            user=self.request.user
+        ).first()
+
+        if not cliente:
+            return
+
+        carrito_bd, creado = CarritoCliente.objects.get_or_create(
+            cliente=cliente
+        )
+
+        carrito_bd.items.all().delete()
+
+        for key, item in self.carrito.items():
+
+            producto_id = item.get('producto_id')
+            variante_id = item.get('variante_id')
+
+            producto = Producto.objects.filter(
+                id=producto_id
+            ).first()
+
+            if not producto:
+                continue
+
+            variante = None
+
+            if variante_id:
+                variante = VarianteProducto.objects.filter(
+                    id=variante_id
+                ).first()
+
+            ItemCarritoCliente.objects.create(
+                carrito=carrito_bd,
+                producto=producto,
+                variante=variante,
+                cantidad=item['cantidad']
+            )

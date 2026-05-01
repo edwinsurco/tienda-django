@@ -166,3 +166,38 @@ class DetallePedido(models.Model):
 
     def __str__(self):
         return f"{self.producto.nombre}"
+
+class CarritoCliente(models.Model):
+    cliente = models.OneToOneField(
+        Cliente,
+        on_delete=models.CASCADE,
+        related_name='carrito_guardado'
+    )
+
+    fecha_actualizacion = models.DateTimeField(
+        auto_now=True
+    )
+
+
+class ItemCarritoCliente(models.Model):
+    carrito = models.ForeignKey(
+        CarritoCliente,
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+
+    producto = models.ForeignKey(
+        Producto,
+        on_delete=models.CASCADE
+    )
+
+    variante = models.ForeignKey(
+        VarianteProducto,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
+    cantidad = models.PositiveIntegerField(
+        default=1
+    )
