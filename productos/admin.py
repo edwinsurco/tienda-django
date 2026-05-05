@@ -24,11 +24,11 @@ class EscalaPrecioInline(admin.TabularInline):
 # INLINE VARIANTES
 # =========================
 
+
 class VarianteProductoInline(admin.TabularInline):
     model = VarianteProducto
     extra = 1
-
-
+    fields = ['nombre', 'stock']
 # =========================
 # ADMIN PRODUCTOS
 # =========================

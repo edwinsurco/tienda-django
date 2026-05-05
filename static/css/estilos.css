@@ -1,7 +1,3 @@
-/* ========================= */
-/* RESET GENERAL */
-/* ========================= */
-
 * {
     box-sizing: border-box;
 }
@@ -21,33 +17,24 @@ button {
     cursor: pointer;
 }
 
-/* ========================= */
-/* HEADER PROFESIONAL */
-/* ========================= */
+/* HEADER */
 
 .header-tienda {
     position: sticky;
     top: 0;
     z-index: 1000;
-
     background: linear-gradient(90deg, #192a56, #273c75);
     color: white;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 16px 6%;
-
     box-shadow: 0 5px 18px rgba(0,0,0,0.25);
 }
 
 .logo-tienda {
     font-size: 28px;
     font-weight: 800;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .logo-tienda span {
@@ -57,7 +44,8 @@ button {
 .nav-tienda {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .nav-tienda a {
@@ -65,34 +53,30 @@ button {
     font-weight: 700;
     padding: 10px 16px;
     border-radius: 999px;
-    transition: 0.2s;
 }
 
-.nav-tienda a:hover {
-    background: rgba(255,255,255,0.18);
-    transform: translateY(-2px);
-}
-
+.nav-tienda a:hover,
 .nav-activo {
     background: rgba(255,255,255,0.18) !important;
     color: white !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-    backdrop-filter: blur(4px);
 }
 
 .carrito-header {
     background: #44bd32;
-    color: white !important;
 }
 
-.carrito-header.nav-activo {
-    background: white !important;
-    color: #273c75 !important;
+/* BANNER */
+
+.banner-promocion {
+    background: linear-gradient(90deg, #44bd32, #2ecc71);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 12px;
 }
 
-/* ========================= */
 /* CONTENEDOR */
-/* ========================= */
 
 .contenedor {
     width: 94%;
@@ -101,15 +85,7 @@ button {
     padding: 25px 0;
 }
 
-.titulo {
-    text-align: center;
-    font-size: 36px;
-    margin: 25px 0;
-}
-
-/* ========================= */
 /* BUSCADOR */
-/* ========================= */
 
 .buscador {
     display: flex;
@@ -124,16 +100,10 @@ button {
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 12px;
-    outline: none;
-}
-
-.buscador input:focus {
-    border-color: #273c75;
 }
 
 .buscador button {
     padding: 14px 24px;
-    font-size: 16px;
     border: none;
     border-radius: 12px;
     background: #273c75;
@@ -141,9 +111,7 @@ button {
     font-weight: bold;
 }
 
-/* ========================= */
-/* CATEGORIAS DESLIZABLES */
-/* ========================= */
+/* CATEGORIAS */
 
 .categorias-wrapper {
     position: relative;
@@ -168,10 +136,6 @@ button {
     display: none;
 }
 
-.categorias a {
-    flex: 0 0 auto;
-}
-
 .categoria {
     display: inline-block;
     padding: 11px 20px;
@@ -181,18 +145,12 @@ button {
     border: 1px solid #ddd;
     font-weight: 600;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    transition: 0.2s;
 }
 
-.categoria:hover {
-    background: #273c75;
-    color: white;
-}
-
+.categoria:hover,
 .categoria.activa {
     background: #273c75;
     color: white;
-    font-weight: bold;
 }
 
 .flecha-cat {
@@ -206,7 +164,6 @@ button {
     color: white;
     font-size: 26px;
     font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
 
 .flecha-cat.izquierda {
@@ -217,9 +174,7 @@ button {
     right: 0;
 }
 
-/* ========================= */
 /* PRODUCTOS */
-/* ========================= */
 
 .productos {
     display: grid;
@@ -239,7 +194,7 @@ button {
 }
 
 .card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-5px);
     box-shadow: 0 10px 22px rgba(0,0,0,0.16);
 }
 
@@ -256,28 +211,7 @@ button {
     color: #2f3640;
 }
 
-.card p {
-    font-size: 14px;
-    color: #555;
-}
-
-/* ========================= */
-/* OFERTAS Y PRECIOS */
-/* ========================= */
-
-.etiqueta-oferta {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-
-    background: #e84118;
-    color: white;
-
-    padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-}
+/* PRECIOS */
 
 .precio {
     margin: 10px 0;
@@ -302,9 +236,57 @@ button {
     font-weight: bold;
 }
 
-/* ========================= */
-/* BOTONES */
-/* ========================= */
+/* ETIQUETAS */
+
+.etiqueta-oferta {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #e84118;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 20;
+}
+
+.punto-escalado {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 12px;
+    height: 12px;
+    background: #e84118;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(232,65,24,.45);
+    z-index: 20;
+}
+
+.alerta-stock-card {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #e84118;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 30;
+}
+
+/* FORM PRODUCTO */
+
+.select-variante {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    background: white;
+    font-size: 14px;
+}
 
 .btn-agregar {
     width: 100%;
@@ -316,16 +298,18 @@ button {
     color: white;
     font-size: 15px;
     font-weight: bold;
-    transition: 0.2s;
 }
 
 .btn-agregar:hover {
     background: #192a56;
 }
 
-/* ========================= */
-/* CARRITO */
-/* ========================= */
+.btn-agregar:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+/* CARRITO Y TABLAS */
 
 .table-container {
     overflow-x: auto;
@@ -375,225 +359,84 @@ td {
     border-radius: 8px;
 }
 
-/* ========================= */
-/* CONSULTA PEDIDO */
-/* ========================= */
+/* FORM CLIENTE */
 
-.card ul {
-    text-align: left;
-    display: inline-block;
+.formulario-cliente {
+    max-width: 480px;
+    margin: 25px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* ========================= */
-/* RESPONSIVE CELULAR */
-/* ========================= */
-
-@media (max-width: 768px) {
-
-    .header-tienda {
-        flex-direction: column;
-        gap: 12px;
-        padding: 14px;
-    }
-
-    .logo-tienda {
-        font-size: 24px;
-    }
-
-    .nav-tienda {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .nav-tienda a {
-        font-size: 14px;
-        padding: 8px 12px;
-    }
-
-    .contenedor {
-        width: 96%;
-        padding: 15px 0;
-    }
-
-    .titulo {
-        font-size: 24px;
-    }
-
-    .buscador {
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .buscador input,
-    .buscador button {
-        width: 100%;
-    }
-
-    .categorias {
-        padding: 10px 40px;
-        gap: 8px;
-    }
-
-    .categoria {
-        font-size: 14px;
-        padding: 9px 15px;
-    }
-
-    .flecha-cat {
-        width: 32px;
-        height: 32px;
-        font-size: 22px;
-    }
-
-    .productos {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-    }
-
-    .imagen {
-        height: 135px;
-    }
-
-    .card {
-        padding: 12px;
-    }
-
-    .card h2 {
-        font-size: 15px;
-    }
-
-    .card p {
-        font-size: 13px;
-    }
-
-    .precio-descuento,
-    .precio-normal {
-        font-size: 17px;
-    }
-
-    .btn-agregar {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-    table {
-        min-width: 650px;
-        font-size: 14px;
-    }
-
-    th, td {
-        padding: 8px;
-    }
+.formulario-cliente p {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
-@media (max-width: 420px) {
-
-    .productos {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .imagen {
-        height: 120px;
-    }
-
-    .logo-tienda {
-        font-size: 22px;
-    }
+.formulario-cliente input,
+.formulario-cliente textarea {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
 }
 
-/* ========================= */
-/* WHATSAPP FLOTANTE */
-/* ========================= */
+/* VER MAS */
+
+.ver-mas {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.ver-mas button {
+    background: #e73f15;
+    color: white;
+    border: none;
+    padding: 16px 60px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+/* FLOTANTES */
 
 .whatsapp-flotante {
     position: fixed;
     right: 22px;
     bottom: 22px;
     z-index: 2000;
-
     width: 58px;
     height: 58px;
-
     background: #25D366;
     color: white;
-
     border-radius: 50%;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 30px;
-    text-decoration: none;
-
     box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-
-    transition: 0.2s;
 }
 
-.whatsapp-flotante:hover {
-    transform: scale(1.08);
-    background: #1ebe5d;
-}
-
-@media (max-width: 768px) {
-
-    .whatsapp-flotante {
-        width: 52px;
-        height: 52px;
-        font-size: 26px;
-        right: 16px;
-        bottom: 16px;
-    }
-
-}
-
-/* ========================= */
-/* BANNER PROMOCION ROTATIVO */
-/* ========================= */
-
-.banner-promocion {
-    background: linear-gradient(90deg, #44bd32, #2ecc71);
+.btn-subir {
+    position: fixed;
+    right: 22px;
+    bottom: 95px;
+    width: 52px;
+    height: 52px;
+    background: #273c75;
     color: white;
+    border-radius: 50%;
     text-align: center;
+    line-height: 52px;
+    font-size: 26px;
     font-weight: bold;
-    font-size: 16px;
-    padding: 12px;
-    letter-spacing: 0.3px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    z-index: 999;
 }
 
-#textoBanner {
-    display: inline-block;
-    animation: aparecerBanner 0.5s ease;
-}
-
-@keyframes aparecerBanner {
-    from {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-
-    .banner-promocion {
-        font-size: 14px;
-        padding: 10px;
-    }
-
-}
-
-/* ========================= */
-/* FOOTER EMPRESA */
-/* ========================= */
+/* FOOTER */
 
 .footer-tienda {
     margin-top: 50px;
@@ -630,12 +473,6 @@ td {
     color: white;
     font-size: 26px;
     font-weight: bold;
-    text-decoration: none;
-    transition: 0.2s;
-}
-
-.btn-red:hover {
-    transform: scale(1.12);
 }
 
 .facebook {
@@ -643,77 +480,97 @@ td {
 }
 
 .tiktok {
-    background: #000000;
+    background: #000;
 }
 
-/* Punto rojo producto con escala */
+/* RESPONSIVE */
 
-.punto-escalado{
-    position:absolute;
-    top:12px;
-    right:12px;
-    width:12px;
-    height:12px;
-    background:#e84118;
-    border-radius:50%;
-    box-shadow:0 0 8px rgba(232,65,24,.45);
-    z-index:20;
-}
+@media (max-width: 768px) {
 
-
-
-/* BOTON VER MAS */
-
-.ver-mas {
-    text-align: center;
-    margin: 40px 0;
-}
-
-.ver-mas button {
-    background: #e73f15;
-    color: white;
-    border: none;
-    padding: 16px 60px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 8px;
-    transition: 0.2s;
-}
-
-.ver-mas button:hover {
-    background: #c23616;
-    transform: scale(1.03);
-}
-
-@media(max-width: 768px) {
-
-    .ver-mas button {
-        width: 90%;
+    .header-tienda {
+        flex-direction: column;
+        gap: 12px;
         padding: 14px;
-        font-size: 16px;
     }
 
-}
+    .logo-tienda {
+        font-size: 24px;
+    }
 
-.btn-subir {
-    position: fixed;
-    right: 22px;
-    bottom: 95px;
-    width: 52px;
-    height: 52px;
-    background: #273c75;
-    color: white;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 52px;
-    font-size: 26px;
-    font-weight: bold;
-    text-decoration: none;
-    z-index: 999;
-    box-shadow: 0 6px 15px rgba(0,0,0,.25);
-}
+    .nav-tienda {
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+    }
 
-@media(max-width: 768px) {
+    .nav-tienda a {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .contenedor {
+        width: 96%;
+        padding: 15px 0;
+    }
+
+    .buscador {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .buscador input,
+    .buscador button {
+        width: 100%;
+    }
+
+    .productos {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .imagen {
+        height: 130px;
+    }
+
+    .card {
+        padding: 12px;
+    }
+
+    .card h2 {
+        font-size: 15px;
+    }
+
+    .precio-descuento,
+    .precio-normal {
+        font-size: 17px;
+    }
+
+    .btn-agregar {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .categorias {
+        padding: 10px 40px;
+    }
+
+    .categoria {
+        font-size: 14px;
+        padding: 9px 15px;
+    }
+
+    table {
+        min-width: 650px;
+        font-size: 14px;
+    }
+
+    .whatsapp-flotante {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+        right: 16px;
+        bottom: 16px;
+    }
 
     .btn-subir {
         width: 46px;
@@ -724,51 +581,9 @@ td {
         bottom: 80px;
     }
 
-}
-
-.select-variante {
-    width: 100%;
-    padding: 10px;
-    margin: 8px 0;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background: white;
-    font-size: 14px;
-}
-
-
-.formulario-cliente {
-    max-width: 480px;
-    margin: 25px auto;
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.formulario-cliente p {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.formulario-cliente input,
-.formulario-cliente textarea {
-    padding: 12px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-}
-
-.alerta-stock-card {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    background: #e84118;
-    color: white;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 30;
+    .ver-mas button {
+        width: 90%;
+        padding: 14px;
+        font-size: 16px;
+    }
 }

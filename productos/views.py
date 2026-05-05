@@ -108,9 +108,6 @@ def agregar_producto(request, producto_id):
         id=producto_id
     )
 
-    if producto.stock <= 0:
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-
     variante = None
 
     if request.method == "POST":
@@ -121,13 +118,19 @@ def agregar_producto(request, producto_id):
 
             variante = get_object_or_404(
                 VarianteProducto,
-                id=variante_id
+                id=variante_id,
+                producto=producto
             )
+
+    if variante and variante.stock <= 0:
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+    if not variante and producto.stock <= 0:
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
     carrito.agregar(producto, variante)
 
     return redirect(request.META.get('HTTP_REFERER', '/'))
-
 
 def eliminar_producto(request, carrito_key):
 
@@ -284,7 +287,7 @@ def crear_pedido(request):
                 total=carrito.obtener_total()
             )
 
-            mensaje = f"Pedido nuevo:%0A%0A"
+            mensaje = "Pedido nuevo:%0A%0A"
             mensaje += f"Pedido N°: {pedido.id}%0A"
             mensaje += f"{nombre}%0A"
             mensaje += f"{telefono}%0A"
@@ -308,9 +311,23 @@ def crear_pedido(request):
                     subtotal=item['subtotal']
                 )
 
-                if producto.stock >= item['cantidad']:
-                    producto.stock -= item['cantidad']
-                    producto.save()
+                variante_id = item.get('variante_id')
+
+                if variante_id:
+
+                    variante = VarianteProducto.objects.filter(
+                        id=variante_id
+                    ).first()
+
+                    if variante and variante.stock >= item['cantidad']:
+                        variante.stock -= item['cantidad']
+                        variante.save()
+
+                else:
+
+                    if producto.stock >= item['cantidad']:
+                        producto.stock -= item['cantidad']
+                        producto.save()
 
                 mensaje += f"{item['nombre']} x {item['cantidad']}%0A"
 
