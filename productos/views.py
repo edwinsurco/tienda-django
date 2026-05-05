@@ -12,7 +12,8 @@ from django.contrib.auth import login, logout, authenticate
 from .forms import RegistroClienteForm
 from .models import Cliente
 from .models import Cliente, CarritoCliente
-
+from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Sum
 
 
 from .models import (
@@ -602,3 +603,26 @@ def cargar_carrito_guardado(request, user):
 
     request.session['carrito'] = carrito_session
     request.session.modified = True
+
+@staff_member_required
+def resumen_pedidos_pendientes(request):
+
+    from .models import DetallePedido
+
+    detalles = DetallePedido.objects.filter(
+        pedido__estado='Pendiente'
+    ).values(
+        'producto__nombre'
+    ).annotate(
+        cantidad_total=Sum('cantidad')
+    ).order_by(
+        'producto__nombre'
+    )
+
+    return render(
+        request,
+        'productos/resumen_pedidos_pendientes.html',
+        {
+            'detalles': detalles
+        }
+    )
