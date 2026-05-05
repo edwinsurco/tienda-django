@@ -1,15 +1,20 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
+
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().capitalize()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nombre
 
 
 class Producto(models.Model):
-
     nombre = models.CharField(max_length=200)
 
     precio = models.DecimalField(
@@ -17,7 +22,10 @@ class Producto(models.Model):
         decimal_places=2
     )
 
-    descripcion = models.TextField()
+    descripcion = models.TextField(
+        blank=True,
+        null=True
+    )
 
     imagen = models.ImageField(
         upload_to='productos/',
@@ -30,11 +38,20 @@ class Producto(models.Model):
         on_delete=models.CASCADE
     )
 
+    stock = models.PositiveIntegerField(
+        default=0
+    )
+
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().capitalize()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.nombre
 
-class VarianteProducto(models.Model):
 
+class VarianteProducto(models.Model):
     producto = models.ForeignKey(
         Producto,
         on_delete=models.CASCADE,
@@ -43,11 +60,16 @@ class VarianteProducto(models.Model):
 
     nombre = models.CharField(max_length=100)
 
+    def save(self, *args, **kwargs):
+        if self.nombre:
+            self.nombre = self.nombre.strip().capitalize()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.producto.nombre} - {self.nombre}"
 
-class EscalaPrecio(models.Model):
 
+class EscalaPrecio(models.Model):
     producto = models.ForeignKey(
         Producto,
         on_delete=models.CASCADE,
@@ -62,10 +84,10 @@ class EscalaPrecio(models.Model):
     )
 
     def __str__(self):
-        return f"{self.cantidad_minima}+ unidades"
+        return f"{self.producto.nombre} - {self.cantidad_minima}+ unidades"
+
 
 class Cliente(models.Model):
-
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
@@ -97,11 +119,16 @@ class Cliente(models.Model):
         auto_now_add=True
     )
 
+    def save(self, *args, **kwargs):
+        if self.nombre_razon_social:
+            self.nombre_razon_social = self.nombre_razon_social.strip().title()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nombre_razon_social} - {self.dni_ruc}"
 
-class Pedido(models.Model):
 
+class Pedido(models.Model):
     cliente = models.ForeignKey(
         Cliente,
         on_delete=models.SET_NULL,
@@ -125,8 +152,10 @@ class Pedido(models.Model):
 
     ESTADOS = [
         ('Pendiente', 'Pendiente'),
+        ('Preparacion', 'En preparación'),
         ('Enviado', 'Enviado'),
         ('Entregado', 'Entregado'),
+        ('Cancelado', 'Cancelado'),
     ]
 
     estado = models.CharField(
@@ -140,7 +169,6 @@ class Pedido(models.Model):
 
 
 class DetallePedido(models.Model):
-
     pedido = models.ForeignKey(
         Pedido,
         on_delete=models.CASCADE,
@@ -150,6 +178,13 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey(
         Producto,
         on_delete=models.CASCADE
+    )
+
+    variante = models.ForeignKey(
+        VarianteProducto,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
     )
 
     cantidad = models.IntegerField()
@@ -165,7 +200,10 @@ class DetallePedido(models.Model):
     )
 
     def __str__(self):
-        return f"{self.producto.nombre}"
+        if self.variante:
+            return f"{self.producto.nombre} - {self.variante.nombre}"
+        return self.producto.nombre
+
 
 class CarritoCliente(models.Model):
     cliente = models.OneToOneField(
@@ -177,6 +215,9 @@ class CarritoCliente(models.Model):
     fecha_actualizacion = models.DateTimeField(
         auto_now=True
     )
+
+    def __str__(self):
+        return f"Carrito de {self.cliente.nombre_razon_social}"
 
 
 class ItemCarritoCliente(models.Model):
@@ -201,3 +242,8 @@ class ItemCarritoCliente(models.Model):
     cantidad = models.PositiveIntegerField(
         default=1
     )
+
+    def __str__(self):
+        if self.variante:
+            return f"{self.producto.nombre} - {self.variante.nombre} x {self.cantidad}"
+        return f"{self.producto.nombre} x {self.cantidad}"

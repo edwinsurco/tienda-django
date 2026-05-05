@@ -107,6 +107,9 @@ def agregar_producto(request, producto_id):
         id=producto_id
     )
 
+    if producto.stock <= 0:
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
     variante = None
 
     if request.method == "POST":
@@ -260,7 +263,7 @@ def crear_pedido(request):
             telefono = form.cleaned_data['celular']
             direccion = form.cleaned_data['direccion']
             correo = form.cleaned_data['correo']
-            
+
             cliente, creado = Cliente.objects.update_or_create(
                 dni_ruc=dni_ruc,
                 defaults={
@@ -272,7 +275,6 @@ def crear_pedido(request):
                 }
             )
 
-
             pedido = Pedido.objects.create(
                 cliente=cliente,
                 nombre=nombre,
@@ -282,6 +284,7 @@ def crear_pedido(request):
             )
 
             mensaje = f"Pedido nuevo:%0A%0A"
+            mensaje += f"Pedido N°: {pedido.id}%0A"
             mensaje += f"{nombre}%0A"
             mensaje += f"{telefono}%0A"
             mensaje += f"{direccion}%0A%0A"
@@ -294,13 +297,19 @@ def crear_pedido(request):
                 if not Producto.objects.filter(id=producto_id).exists():
                     continue
 
+                producto = Producto.objects.get(id=producto_id)
+
                 DetallePedido.objects.create(
                     pedido=pedido,
-                    producto_id=producto_id,
+                    producto=producto,
                     cantidad=item['cantidad'],
                     precio=item['precio_actual'],
                     subtotal=item['subtotal']
                 )
+
+                if producto.stock >= item['cantidad']:
+                    producto.stock -= item['cantidad']
+                    producto.save()
 
                 mensaje += f"{item['nombre']} x {item['cantidad']}%0A"
 
@@ -318,7 +327,6 @@ def crear_pedido(request):
                 pedido_id=pedido.id
             )
 
-    
     else:
 
         datos_iniciales = {}
@@ -340,6 +348,7 @@ def crear_pedido(request):
                 pass
 
         form = PedidoForm(initial=datos_iniciales)
+
     return render(
         request,
         'productos/crear_pedido.html',
