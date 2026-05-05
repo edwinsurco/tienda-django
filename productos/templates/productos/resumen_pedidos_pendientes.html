@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Resumen pedidos pendientes</title>
+
+{% load static %}
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet"
+      href="{% static 'css/estilos.css' %}">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<h1 style="text-align:center;">
+📦 Resumen de pedidos pendientes
+</h1>
+
+{% if detalles %}
+
+<table>
+
+<tr>
+    <th>Producto</th>
+    <th>Cantidad total</th>
+</tr>
+
+{% for item in detalles %}
+
+<tr>
+    <td>{{ item.producto__nombre }}</td>
+    <td>{{ item.cantidad_total }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% else %}
+
+<p style="text-align:center;">
+No hay pedidos pendientes.
+</p>
+
+{% endif %}
+
+<br>
+
+<div style="text-align:center;">
+    <a href="/admin/">
+        <button>
+            Volver al admin
+        </button>
+    </a>
+</div>
+
+</div>
+
+</body>
+
+</html>
