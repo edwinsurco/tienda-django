@@ -32,8 +32,7 @@
 
     <nav class="nav-tienda">
 
-        <a href="{% url 'lista_productos' %}"
-           class="nav-activo">
+        <a href="{% url 'lista_productos' %}" class="nav-activo">
             Inicio
         </a>
 
@@ -41,25 +40,37 @@
             📦 Pedidos
         </a>
 
-        <a href="{% url 'ver_carrito' %}"
-           class="carrito-header">
+        <a href="{% url 'ver_carrito' %}" class="carrito-header">
             🛒 Carrito
         </a>
 
         {% if user.is_authenticated %}
 
-        <a href="{% url 'mis_pedidos' %}">
-            📦 Mis pedidos
-        </a>
+            {% if user.is_superuser %}
 
-            <a href="#"
-               class="usuario-header">
-                👤 {{ user.username }}
-            </a>
+                <a href="/admin/">
+                    ⚙️ Admin
+                </a>
 
-            <a href="{% url 'logout_cliente' %}">
-                Salir
-            </a>
+                <a href="{% url 'logout_cliente' %}">
+                    Salir
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'mis_pedidos' %}">
+                    📦 Mis pedidos
+                </a>
+
+                <a href="#" class="usuario-header">
+                    👤 {{ user.username }}
+                </a>
+
+                <a href="{% url 'logout_cliente' %}">
+                    Salir
+                </a>
+
+            {% endif %}
 
         {% else %}
 
@@ -78,20 +89,14 @@
 </header>
 
 <div class="banner-promocion">
-
     <span id="textoBanner">
         🚚 Delivery GRATIS desde S/ 199.90 solo en la ciudad
     </span>
-
 </div>
 
 <div class="contenedor">
 
-    <!-- BUSCADOR -->
-
-    <form method="GET"
-          action=""
-          class="buscador">
+    <form method="GET" action="" class="buscador">
 
         <input type="text"
                name="buscar"
@@ -104,8 +109,6 @@
 
     </form>
 
-    <!-- CATEGORÍAS -->
-
     <div class="categorias-wrapper">
 
         <button class="flecha-cat izquierda"
@@ -114,8 +117,7 @@
             ‹
         </button>
 
-        <div class="categorias"
-             id="categoriasScroll">
+        <div class="categorias" id="categoriasScroll">
 
             <a href="{% url 'lista_productos' %}">
                 <span class="categoria {% if not categoria_actual %}activa{% endif %}">
@@ -143,28 +145,31 @@
 
     </div>
 
-    <!-- PRODUCTOS -->
-
-    <div class="productos"
-         id="listaProductos">
+    <div class="productos" id="listaProductos">
 
         {% for producto in productos %}
 
         <div class="card producto-item">
 
             {% if producto.tiene_escalas %}
-            <div class="punto-escalado"></div>
+                <div class="punto-escalado"></div>
             {% endif %}
 
             {% if producto.precio_actual != producto.precio %}
-            <span class="etiqueta-oferta">
-                OFERTA
-            </span>
+                <span class="etiqueta-oferta">
+                    OFERTA
+                </span>
+            {% endif %}
+
+            {% if producto.stock <= 0 %}
+                <div class="alerta-stock-card">
+                    STOCK AGOTADO
+                </div>
             {% endif %}
 
             {% if producto.imagen %}
-            <img src="{{ producto.imagen.url }}"
-                 class="imagen">
+                <img src="{{ producto.imagen.url }}"
+                     class="imagen">
             {% endif %}
 
             <h2>
@@ -193,57 +198,61 @@
 
             </div>
 
-            <p>
-                {{ producto.descripcion }}
-            </p>
+            {% if producto.stock > 0 %}
 
-            <form method="POST"
-                  action="{% url 'agregar_producto' producto.id %}">
+                <form method="POST"
+                      action="{% url 'agregar_producto' producto.id %}">
 
-                {% csrf_token %}
+                    {% csrf_token %}
 
-                {% if producto.variantes.all %}
+                    {% if producto.variantes.all %}
 
-                <select name="variante_id"
-                        class="select-variante"
-                        required>
+                    <select name="variante_id"
+                            class="select-variante"
+                            required>
 
-                    <option value="">
-                        Elegir opción
-                    </option>
+                        <option value="">
+                            Elegir opción
+                        </option>
 
-                    {% for variante in producto.variantes.all %}
+                        {% for variante in producto.variantes.all %}
+                        <option value="{{ variante.id }}">
+                            {{ variante.nombre }}
+                        </option>
+                        {% endfor %}
 
-                    <option value="{{ variante.id }}">
-                        {{ variante.nombre }}
-                    </option>
+                    </select>
 
-                    {% endfor %}
-
-                </select>
-
-                {% endif %}
-
-                <button class="btn-agregar"
-                        type="submit">
-
-                    ➕ Agregar
-
-                    {% if producto.cantidad_en_carrito > 0 %}
-                        ({{ producto.cantidad_en_carrito }})
                     {% endif %}
 
+                    <button class="btn-agregar"
+                            type="submit">
+
+                        ➕ Agregar
+
+                        {% if producto.cantidad_en_carrito > 0 %}
+                            ({{ producto.cantidad_en_carrito }})
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <button class="btn-agregar"
+                        type="button"
+                        disabled>
+                    Sin stock
                 </button>
 
-            </form>
+            {% endif %}
 
         </div>
 
         {% endfor %}
 
     </div>
-
-    <!-- VER MÁS -->
 
     <div class="ver-mas">
 
@@ -255,8 +264,6 @@
     </div>
 
 </div>
-
-<!-- FOOTER -->
 
 <footer class="footer-tienda">
 
@@ -290,8 +297,6 @@
 
 </footer>
 
-<!-- SUBIR -->
-
 <a href="#"
    class="btn-subir">
     ⬆
@@ -308,43 +313,28 @@ const mensajesBanner = [
 let indiceBanner = 0;
 
 setInterval(() => {
-
-    indiceBanner =
-        (indiceBanner + 1) %
-        mensajesBanner.length;
+    indiceBanner = (indiceBanner + 1) % mensajesBanner.length;
 
     document.getElementById("textoBanner").textContent =
         mensajesBanner[indiceBanner];
-
 }, 4000);
 
 function moverCategorias(cantidad) {
-
-    const contenedor =
-        document.getElementById("categoriasScroll");
+    const contenedor = document.getElementById("categoriasScroll");
 
     contenedor.scrollBy({
         left: cantidad,
         behavior: "smooth"
     });
-
 }
 
-document.addEventListener(
-"DOMContentLoaded",
-function() {
+document.addEventListener("DOMContentLoaded", function() {
 
-    const productos =
-        document.querySelectorAll(".producto-item");
+    const productos = document.querySelectorAll(".producto-item");
+    const boton = document.getElementById("btnVerMas");
 
-    const boton =
-        document.getElementById("btnVerMas");
-
-    let cantidadVisible =
-        window.innerWidth <= 768 ? 12 : 24;
-
-    let incremento =
-        window.innerWidth <= 768 ? 12 : 24;
+    let cantidadVisible = window.innerWidth <= 768 ? 12 : 24;
+    let incremento = window.innerWidth <= 768 ? 12 : 24;
 
     function mostrarProductos() {
 
@@ -364,15 +354,10 @@ function() {
 
     }
 
-    boton.addEventListener(
-        "click",
-        function() {
-
-            cantidadVisible += incremento;
-            mostrarProductos();
-
-        }
-    );
+    boton.addEventListener("click", function() {
+        cantidadVisible += incremento;
+        mostrarProductos();
+    });
 
     mostrarProductos();
 
@@ -381,4 +366,5 @@ function() {
 </script>
 
 </body>
+
 </html>
