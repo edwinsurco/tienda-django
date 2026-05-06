@@ -14,6 +14,9 @@ from .models import Cliente
 from .models import Cliente, CarritoCliente
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db.models import Sum
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 
 
 from .models import (
@@ -643,3 +646,62 @@ def resumen_pedidos_pendientes(request):
             'detalles': detalles
         }
     )
+
+@staff_member_required
+def resumen_pedidos_pendientes_pdf(request):
+
+    detalles = DetallePedido.objects.filter(
+        pedido__estado='Pendiente'
+    ).values(
+        'producto__nombre'
+    ).annotate(
+        cantidad_total=Sum('cantidad')
+    ).order_by(
+        'producto__nombre'
+    )
+
+    response = HttpResponse(
+        content_type='application/pdf'
+    )
+
+    response['Content-Disposition'] = (
+        'attachment; filename="resumen_pedidos_pendientes.pdf"'
+    )
+
+    pdf = canvas.Canvas(response, pagesize=A4)
+
+    ancho, alto = A4
+
+    y = alto - 50
+
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(50, y, "Resumen de pedidos pendientes")
+
+    y -= 35
+
+    pdf.setFont("Helvetica-Bold", 12)
+    pdf.drawString(50, y, "Producto")
+    pdf.drawString(400, y, "Cantidad")
+
+    y -= 20
+
+    pdf.setFont("Helvetica", 11)
+
+    for item in detalles:
+
+        if y < 60:
+            pdf.showPage()
+            y = alto - 50
+            pdf.setFont("Helvetica", 11)
+
+        producto = item['producto__nombre']
+        cantidad = item['cantidad_total']
+
+        pdf.drawString(50, y, str(producto))
+        pdf.drawString(420, y, str(cantidad))
+
+        y -= 18
+
+    pdf.save()
+
+    return response

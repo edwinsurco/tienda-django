@@ -101,9 +101,11 @@ urlpatterns = [
         name='mis_pedidos'
         ),
     
+    
     path(
-    'admin/resumen-pendientes/',
-    views.resumen_pedidos_pendientes,
-    name='resumen_pedidos_pendientes'
-    ),
+        'admin/resumen-pendientes/pdf/',
+        views.resumen_pedidos_pendientes_pdf,
+        name='resumen_pedidos_pendientes_pdf'
+        ),
+    
 ]
