@@ -62,7 +62,13 @@ class Carrito:
         carrito_key = str(carrito_key)
 
         if carrito_key in self.carrito:
-            self.carrito[carrito_key]['cantidad'] += 1
+
+            item = self.carrito[carrito_key]
+
+            stock_disponible = self.obtener_stock_disponible(item)
+
+            if item['cantidad'] < stock_disponible:
+                item['cantidad'] += 1
 
         self.guardar()
 
@@ -83,10 +89,19 @@ class Carrito:
         carrito_key = str(carrito_key)
 
         if carrito_key in self.carrito:
+
+            item = self.carrito[carrito_key]
+
+            stock_disponible = self.obtener_stock_disponible(item)
+
             if cantidad <= 0:
                 del self.carrito[carrito_key]
+
+            elif cantidad > stock_disponible:
+                item['cantidad'] = stock_disponible
+
             else:
-                self.carrito[carrito_key]['cantidad'] = cantidad
+                item['cantidad'] = cantidad
 
         self.guardar()
 
@@ -130,6 +145,7 @@ class Carrito:
 
             item['precio_actual'] = precio
             item['subtotal'] = round(subtotal, 2)
+            item['stock_disponible'] = self.obtener_stock_disponible(item)
 
             total += subtotal
 
@@ -212,3 +228,29 @@ class Carrito:
                 variante=variante,
                 cantidad=item['cantidad']
             )
+    
+    def obtener_stock_disponible(self, item):
+
+        variante_id = item.get('variante_id')
+        producto_id = item.get('producto_id')
+
+        if variante_id:
+            from .models import VarianteProducto
+
+            variante = VarianteProducto.objects.filter(
+                id=variante_id
+            ).first()
+
+            if variante:
+                return variante.stock
+
+            return 0
+
+        producto = Producto.objects.filter(
+            id=producto_id
+        ).first()
+
+        if producto:
+            return producto.stock
+
+        return 0

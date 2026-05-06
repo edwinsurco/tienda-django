@@ -60,6 +60,10 @@ class VarianteProducto(models.Model):
 
     nombre = models.CharField(max_length=100)
 
+    stock = models.PositiveIntegerField(
+        default=0
+    )
+
     def save(self, *args, **kwargs):
         if self.nombre:
             self.nombre = self.nombre.strip().capitalize()

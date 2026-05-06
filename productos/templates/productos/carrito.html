@@ -88,6 +88,7 @@ S/ {{ item.precio_actual }}
        name="cantidad"
        value="{{ item.cantidad }}"
        min="1"
+       max="{{ item.stock_disponible }}"
        class="input-cantidad">
 
 <a href="{% url 'sumar_producto' key %}">
