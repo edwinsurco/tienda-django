@@ -68,7 +68,7 @@ class Carrito:
             stock_disponible = self.obtener_stock_disponible(item)
 
             if item['cantidad'] < stock_disponible:
-                item['cantidad'] += 1
+                item['cantidad'] = float(item['cantidad']) + 0.5
 
         self.guardar()
 
@@ -77,9 +77,11 @@ class Carrito:
         carrito_key = str(carrito_key)
 
         if carrito_key in self.carrito:
-            self.carrito[carrito_key]['cantidad'] -= 1
+            self.carrito[carrito_key]['cantidad'] = float(
+                self.carrito[carrito_key]['cantidad']
+            ) - 0.5
 
-            if self.carrito[carrito_key]['cantidad'] <= 0:
+            if self.carrito[carrito_key]['cantidad'] < 0.5:
                 del self.carrito[carrito_key]
 
         self.guardar()
@@ -94,7 +96,7 @@ class Carrito:
 
             stock_disponible = self.obtener_stock_disponible(item)
 
-            if cantidad <= 0:
+            if cantidad < 0.5:
                 del self.carrito[carrito_key]
 
             elif cantidad > stock_disponible:

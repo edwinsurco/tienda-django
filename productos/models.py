@@ -191,7 +191,10 @@ class DetallePedido(models.Model):
         blank=True
     )
 
-    cantidad = models.IntegerField()
+    cantidad = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
 
     precio = models.DecimalField(
         max_digits=10,

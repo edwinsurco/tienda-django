@@ -397,7 +397,7 @@ def actualizar_cantidad(request, carrito_key):
 
         carrito = Carrito(request)
 
-        cantidad = int(request.POST.get("cantidad", 1))
+        from decimal import Decimal
 
         carrito.actualizar(carrito_key, cantidad)
 
@@ -412,18 +412,22 @@ def consultar_pedido(request):
     if request.method == "POST":
 
         numero = request.POST.get("numero")
+        dni_ruc = request.POST.get("dni_ruc")
 
-        try:
+        pedido = Pedido.objects.filter(
+            id=numero,
+            cliente__dni_ruc=dni_ruc
+        ).first()
 
-            pedido = Pedido.objects.get(id=numero)
+        if pedido:
 
             detalles = DetallePedido.objects.filter(
                 pedido=pedido
             )
 
-        except Pedido.DoesNotExist:
+        else:
 
-            error = "Pedido no encontrado"
+            error = "No se encontró un pedido con esos datos."
 
     return render(
         request,
