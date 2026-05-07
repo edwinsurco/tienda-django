@@ -17,6 +17,7 @@ from django.db.models import Sum
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
+from decimal import Decimal
 
 
 from .models import (
@@ -397,6 +398,11 @@ def actualizar_cantidad(request, carrito_key):
 
         carrito = Carrito(request)
 
+        cantidad = Decimal(request.POST.get("cantidad", "1"))
+
+        if cantidad % Decimal("0.5") != 0:
+            cantidad = Decimal("1")
+
         from decimal import Decimal
 
         carrito.actualizar(carrito_key, cantidad)
@@ -480,6 +486,34 @@ def registro_cliente(request):
             celular = form.cleaned_data['celular']
             direccion = form.cleaned_data['direccion']
 
+            if User.objects.filter(username=username).exists():
+                form.add_error(
+                    'username',
+                    'Este usuario ya existe.'
+                )
+
+                return render(
+                    request,
+                    'productos/registro_cliente.html',
+                    {
+                        'form': form
+                    }
+                )
+
+            if Cliente.objects.filter(dni_ruc=dni_ruc).exists():
+                form.add_error(
+                    'dni_ruc',
+                    'Este DNI o RUC ya está registrado.'
+                )
+
+                return render(
+                    request,
+                    'productos/registro_cliente.html',
+                    {
+                        'form': form
+                    }
+                )
+
             user = User.objects.create_user(
                 username=username,
                 email=email,
@@ -491,7 +525,8 @@ def registro_cliente(request):
                 dni_ruc=dni_ruc,
                 nombre_razon_social=nombre,
                 celular=celular,
-                direccion=direccion
+                direccion=direccion,
+                correo=email
             )
 
             login(request, user)
@@ -509,8 +544,6 @@ def registro_cliente(request):
             'form': form
         }
     )
-
-
 def login_cliente(request):
 
     error = None
