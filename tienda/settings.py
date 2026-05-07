@@ -159,3 +159,5 @@ EMAIL_HOST_USER = os.environ.get('Autodisur@gmail.com')
 EMAIL_HOST_PASSWORD = os.environ.get('cazd fiou pszf zyrq')
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_TIMEOUT = 10
