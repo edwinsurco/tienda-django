@@ -117,6 +117,6 @@ urlpatterns = [
         'prueba-correo/',
         views.prueba_correo,
         name='prueba_correo'
-    ),
+        ),
     
 ]
