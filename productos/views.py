@@ -21,6 +21,7 @@ from decimal import Decimal
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 
 
 from .models import (
@@ -549,12 +550,19 @@ def registro_cliente(request):
     )
 def login_cliente(request):
 
-    error = None
-
     if request.method == "POST":
 
-        username = request.POST.get("username")
+        usuario_o_dni = request.POST.get("username")
         password = request.POST.get("password")
+
+        username = usuario_o_dni
+
+        cliente = Cliente.objects.filter(
+            dni_ruc=usuario_o_dni
+        ).first()
+
+        if cliente and cliente.user:
+            username = cliente.user.username
 
         user = authenticate(
             request,
@@ -565,20 +573,26 @@ def login_cliente(request):
         if user is not None:
 
             login(request, user)
+
             cargar_carrito_guardado(request, user)
 
             return redirect('lista_productos')
 
         else:
 
-            error = "Usuario o contraseña incorrectos"
+            error = "Usuario/DNI o contraseña incorrectos."
+
+            return render(
+                request,
+                'productos/login_cliente.html',
+                {
+                    'error': error
+                }
+            )
 
     return render(
         request,
-        'productos/login_cliente.html',
-        {
-            'error': error
-        }
+        'productos/login_cliente.html'
     )
 
 
@@ -747,19 +761,3 @@ def resumen_pedidos_pendientes_pdf(request):
     return response
 
 
-def prueba_correo(request):
-
-    try:
-        send_mail(
-            'Prueba correo tienda',
-            'Este es un correo de prueba desde Django + Brevo.',
-            settings.DEFAULT_FROM_EMAIL,
-            ['edwinssurco123@gmail.com'],
-            fail_silently=False,
-        )
-
-        return HttpResponse("Correo enviado correctamente")
-
-    except Exception as e:
-
-        return HttpResponse(f"Error enviando correo: {e}")
