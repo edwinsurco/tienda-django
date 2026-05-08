@@ -113,10 +113,6 @@ urlpatterns = [
         name='resumen_pedidos_pendientes_pdf'
         ),
 
-    path(
-        'prueba-correo/',
-        views.prueba_correo,
-        name='prueba_correo'
-        ),
+    
     
 ]
