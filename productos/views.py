@@ -18,6 +18,9 @@ from django.http import HttpResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from decimal import Decimal
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.conf import settings
 
 
 from .models import (
@@ -742,3 +745,21 @@ def resumen_pedidos_pendientes_pdf(request):
     pdf.save()
 
     return response
+
+
+def prueba_correo(request):
+
+    try:
+        send_mail(
+            'Prueba correo tienda',
+            'Este es un correo de prueba desde Django + Brevo.',
+            settings.DEFAULT_FROM_EMAIL,
+            ['edwinssurco123@gmail.com'],
+            fail_silently=False,
+        )
+
+        return HttpResponse("Correo enviado correctamente")
+
+    except Exception as e:
+
+        return HttpResponse(f"Error enviando correo: {e}")
