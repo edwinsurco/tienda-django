@@ -22,6 +22,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 
 from .models import (
@@ -400,16 +401,25 @@ def actualizar_cantidad(request, carrito_key):
 
     if request.method == "POST":
 
+        cantidad = Decimal(
+            request.POST.get("cantidad", "1")
+        )
+
+        if cantidad % Decimal('0.5') != 0:
+
+            messages.error(
+                request,
+                "Solo se permiten múltiplos de 0.5"
+            )
+
+            return redirect('ver_carrito')
+
         carrito = Carrito(request)
 
-        cantidad = Decimal(request.POST.get("cantidad", "1"))
-
-        if cantidad % Decimal("0.5") != 0:
-            cantidad = Decimal("1")
-
-        from decimal import Decimal
-
-        carrito.actualizar(carrito_key, cantidad)
+        carrito.actualizar(
+            carrito_key,
+            cantidad
+        )
 
     return redirect('ver_carrito')
 
