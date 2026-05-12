@@ -366,6 +366,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </script>
 
+<script>
+
+window.addEventListener("load", function () {
+
+    const categoriaActiva =
+        document.querySelector(".categoria.activa");
+
+    if (categoriaActiva) {
+
+        categoriaActiva.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "nearest"
+        });
+
+    }
+
+});
+
+</script>
+
 </body>
 
 </html>

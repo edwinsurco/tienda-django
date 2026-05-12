@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+
+{% block branding %}
+
+<h1 id="site-name">
+
+    <a href="/admin/">
+        Administración Tienda
+    </a>
+
+</h1>
+
+<div style="margin-top:15px;">
+
+    <a href="/resumen-pendientes/pdf/"
+       target="_blank"
+       style="
+            background:#198754;
+            color:white;
+            padding:12px 18px;
+            border-radius:10px;
+            text-decoration:none;
+            font-weight:bold;
+       ">
+
+       📄 Descargar Resumen PDF
+
+    </a>
+
+</div>
+
+{% endblock %}

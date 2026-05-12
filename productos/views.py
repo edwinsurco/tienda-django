@@ -24,7 +24,6 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
-
 from .models import (
     Producto,
     Categoria,
@@ -714,6 +713,34 @@ def resumen_pedidos_pendientes(request):
 @staff_member_required
 def resumen_pedidos_pendientes_pdf(request):
 
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = (
+        'attachment; filename="resumen_pedidos_pendientes.pdf"'
+    )
+
+    pdf = canvas.Canvas(response, pagesize=A4)
+    ancho, alto = A4
+
+    y = alto - 50
+
+    # ===============================
+    # TITULO
+    # ===============================
+
+    pdf.setFont("Helvetica-Bold", 16)
+    pdf.drawString(50, y, "Resumen de pedidos pendientes")
+
+    y -= 35
+
+    # ===============================
+    # RESUMEN GENERAL DE PRODUCTOS
+    # ===============================
+
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(50, y, "1. Resumen general para alistar productos")
+
+    y -= 25
+
     detalles = DetallePedido.objects.filter(
         pedido__estado='Pendiente'
     ).values(
@@ -724,50 +751,110 @@ def resumen_pedidos_pendientes_pdf(request):
         'producto__nombre'
     )
 
-    response = HttpResponse(
-        content_type='application/pdf'
-    )
-
-    response['Content-Disposition'] = (
-        'attachment; filename="resumen_pedidos_pendientes.pdf"'
-    )
-
-    pdf = canvas.Canvas(response, pagesize=A4)
-
-    ancho, alto = A4
-
-    y = alto - 50
-
-    pdf.setFont("Helvetica-Bold", 16)
-    pdf.drawString(50, y, "Resumen de pedidos pendientes")
-
-    y -= 35
-
-    pdf.setFont("Helvetica-Bold", 12)
+    pdf.setFont("Helvetica-Bold", 11)
     pdf.drawString(50, y, "Producto")
-    pdf.drawString(400, y, "Cantidad")
+    pdf.drawString(430, y, "Cantidad")
 
-    y -= 20
+    y -= 18
 
-    pdf.setFont("Helvetica", 11)
+    pdf.setFont("Helvetica", 10)
 
     for item in detalles:
 
-        if y < 60:
+        if y < 70:
             pdf.showPage()
             y = alto - 50
-            pdf.setFont("Helvetica", 11)
 
-        producto = item['producto__nombre']
-        cantidad = item['cantidad_total']
+        producto = str(item['producto__nombre'])
+        cantidad = str(item['cantidad_total'])
 
-        pdf.drawString(50, y, str(producto))
-        pdf.drawString(420, y, str(cantidad))
+        pdf.drawString(50, y, producto[:55])
+        pdf.drawString(450, y, cantidad)
 
-        y -= 18
+        y -= 16
+
+    # ===============================
+    # DETALLE POR CLIENTE
+    # ===============================
+
+    y -= 25
+
+    if y < 120:
+        pdf.showPage()
+        y = alto - 50
+
+    pdf.setFont("Helvetica-Bold", 13)
+    pdf.drawString(50, y, "2. Detalle por cliente y pedido")
+
+    y -= 25
+
+    pedidos = Pedido.objects.filter(
+        estado='Pendiente'
+    ).order_by(
+        'id'
+    )
+
+    for pedido in pedidos:
+
+        if y < 130:
+            pdf.showPage()
+            y = alto - 50
+
+        pdf.setFont("Helvetica-Bold", 11)
+        pdf.drawString(50, y, f"Pedido N° {pedido.id}")
+
+        y -= 16
+
+        pdf.setFont("Helvetica", 10)
+        pdf.drawString(50, y, f"Cliente: {pedido.nombre}")
+        y -= 14
+
+        pdf.drawString(50, y, f"Teléfono: {pedido.telefono}")
+        y -= 14
+
+        pdf.drawString(50, y, f"Dirección: {pedido.direccion}")
+        y -= 20
+
+        pdf.setFont("Helvetica-Bold", 9)
+        pdf.drawString(50, y, "Producto")
+        pdf.drawString(300, y, "Cant.")
+        pdf.drawString(360, y, "Precio")
+        pdf.drawString(440, y, "Subtotal")
+
+        y -= 15
+
+        pdf.setFont("Helvetica", 9)
+
+        detalles_pedido = DetallePedido.objects.filter(
+            pedido=pedido
+        )
+
+        for detalle in detalles_pedido:
+
+            if y < 70:
+                pdf.showPage()
+                y = alto - 50
+
+            producto = detalle.producto.nombre
+            cantidad = detalle.cantidad
+            precio = detalle.precio
+            subtotal = detalle.subtotal
+
+            pdf.drawString(50, y, str(producto)[:38])
+            pdf.drawString(305, y, str(cantidad))
+            pdf.drawString(360, y, f"S/ {precio}")
+            pdf.drawString(440, y, f"S/ {subtotal}")
+
+            y -= 15
+
+        y -= 5
+
+        pdf.setFont("Helvetica-Bold", 10)
+        pdf.drawString(360, y, "Total:")
+        pdf.drawString(440, y, f"S/ {pedido.total}")
+
+        y -= 30
 
     pdf.save()
 
     return response
-
-
